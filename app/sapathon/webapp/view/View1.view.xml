@@ -1,0 +1,100 @@
+<mvc:View controllerName="com.sap.sapathon.controller.View1" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:form="sap.ui.layout.form" xmlns:viz="sap.viz.ui5.controls" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds" xmlns:viz.data="sap.viz.ui5.data">
+    <Page id="page" title="{i18n>title}">
+        <content>
+            <l:VerticalLayout id="containerLayout" width="100%">
+                <l:BlockLayout id="BlockLayout" background="{/selectedBackground}">
+                    <l:BlockLayoutRow accentCells="Accent1">
+                        <l:BlockLayoutCell id="Accent1" width="2">
+                            <viz:Popover id="idPopOver1" />
+                            <viz:VizFrame id="idVizFrame1" uiConfig="{applicationSet:'fiori'}" vizType="column" vizProperties="{title:{text:'Energy Consumption'}}" class="vizClass">
+                                <viz:dataset>
+                                    <viz.data:FlattenedDataset data="{vizData>/}">
+                                        <viz.data:dimensions>
+                                            <viz.data:DimensionDefinition name="Month" value="{vizData>Month}" />
+                                        </viz.data:dimensions>
+                                        <viz.data:measures>
+                                            <viz.data:MeasureDefinition name="Count of custom program" value="{vizData>Count of custom program}" />
+                                            <viz.data:MeasureDefinition name="Run count per month" value="{vizData>Run count per month}" />
+                                            <viz.data:MeasureDefinition name="CO2 emission in gram" value="{vizData>CO2 emission in gram}" />
+                                        </viz.data:measures>
+                                    </viz.data:FlattenedDataset>
+                                </viz:dataset>
+                                <viz:feeds>
+                                    <viz.feeds:FeedItem id="valueAxisFeed1" uid="valueAxis" type="Measure" values="Count of custom program,Run count per month,CO2 emission in gram" />
+                                    <viz.feeds:FeedItem id="feedCategoryAxis1" uid="categoryAxis" type="Dimension" values="Month" />
+                                </viz:feeds>
+                            </viz:VizFrame>
+                        </l:BlockLayoutCell>
+                        <l:BlockLayoutCell width="2">
+                            <viz:Popover id="idPopOver4" />
+                            <viz:VizFrame id="idVizFrame4" uiConfig="{applicationSet:'fiori'}" vizType="column" vizProperties="{title:{text:'Energy Consumption'}}" class="vizClass">
+                                <viz:dataset>
+                                    <viz.data:FlattenedDataset data="{vizData>/}">
+                                        <viz.data:dimensions>
+                                            <viz.data:DimensionDefinition name="Month" value="{vizData>Month}" />
+                                        </viz.data:dimensions>
+                                        <viz.data:measures>
+                                            <viz.data:MeasureDefinition name="Energy consumption" value="{vizData>Energy consumption}" />
+                                            <viz.data:MeasureDefinition name="Count of custom program" value="{vizData>Count of custom program}" />
+                                            <viz.data:MeasureDefinition name="Run count per month" value="{vizData>Run count per month}" />
+                                        </viz.data:measures>
+                                    </viz.data:FlattenedDataset>
+                                </viz:dataset>
+                                <viz:feeds>
+                                    <viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Count of custom program" />
+                                    <viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Run count per month,Energy consumption" />
+                                    <viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Month" />
+                                </viz:feeds>
+                            </viz:VizFrame>
+                        </l:BlockLayoutCell>
+                    </l:BlockLayoutRow>
+                    <l:BlockLayoutRow accentCells="Accent2">
+                        <l:BlockLayoutCell id="Accent2" width="2">
+                            <viz:Popover id="idPopOver3" />
+                            <viz:VizFrame id="idVizFrame3" uiConfig="{applicationSet:'fiori'}" vizType="bar" vizProperties="{title:{text:'Energy Consumption'}}" class="vizClass">
+                                <viz:dataset>
+                                    <viz.data:FlattenedDataset data="{Chart2Data>/}">
+                                        <viz.data:dimensions>
+                                            <viz.data:DimensionDefinition name="Paramater" value="{Chart2Data>Paramater}" />
+                                            <viz.data:DimensionDefinition name="Month" value="{Chart2Data>Month}" />
+                                        </viz.data:dimensions>
+                                        <viz.data:measures>
+                                            <viz.data:MeasureDefinition name="Value" value="{Chart2Data>Value}" />
+                                        </viz.data:measures>
+                                    </viz.data:FlattenedDataset>
+                                </viz:dataset>
+                                <viz:feeds>
+                                    <viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Value" />
+                                    <viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Paramater,Month" />
+                                </viz:feeds>
+                            </viz:VizFrame>
+                        </l:BlockLayoutCell>
+                        <l:BlockLayoutCell width="2">
+                            <viz:Popover id="idPopOver2" />
+                            <viz:VizFrame id="idVizFrame2" uiConfig="{applicationSet:'fiori'}" vizType="bubble" vizProperties="{title:{text:''}}" class="vizClass">
+                                <viz:dataset>
+                                    <viz.data:FlattenedDataset data="{vizData1>/}">
+                                        <viz.data:dimensions>
+                                            <viz.data:DimensionDefinition name="Month" value="{vizData1>Month}" />
+                                        </viz.data:dimensions>
+                                        <viz.data:measures>
+                                            <viz.data:MeasureDefinition name="Count of custom program" value="{vizData1>Count of custom program}" />
+                                            <viz.data:MeasureDefinition name="CO2 emission in kg" value="{vizData1>CO2 emission in kg}" />
+                                            <viz.data:MeasureDefinition name="Run count per month" value="{vizData1>Run count per month}" />
+                                        </viz.data:measures>
+                                    </viz.data:FlattenedDataset>
+                                </viz:dataset>
+                                <viz:feeds>
+                                    <viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Run count per month" />
+                                    <viz.feeds:FeedItem uid="valueAxis2" type="Measure" values="CO2 emission in kg" />
+                                    <viz.feeds:FeedItem uid="bubbleWidth" type="Measure" values="Count of custom program" />
+                                    <viz.feeds:FeedItem uid="color" type="Dimension" values="Month" />
+                                </viz:feeds>
+                            </viz:VizFrame>
+                        </l:BlockLayoutCell>
+                    </l:BlockLayoutRow>
+                </l:BlockLayout>
+            </l:VerticalLayout>
+        </content>
+    </Page>
+</mvc:View>

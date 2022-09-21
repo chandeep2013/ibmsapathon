@@ -1,0 +1,11 @@
+.sapMBarTitleAlignAuto .sapMBarPH {
+    justify-content: center !important;
+}
+.sapUiBlockLayoutSizeXL:not(.sapUiBlockLayoutKeepFontSize) .sapUiBlockCellContent {
+    padding: 0.5rem 1rem !important;
+    font-size: 1rem !important;
+}
+.vizClass{
+    width: 47rem !important;
+    height: 20rem !important;
+}

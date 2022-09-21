@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Capabilities.V1.xml">
+        <edmx:Include Alias="Capabilities" Namespace="Org.OData.Capabilities.V1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="CatalogService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="Sales" EntityType="CatalogService.Sales"/>
+                <EntitySet Name="VSales" EntityType="CatalogService.VSales"/>
+                <EntitySet Name="SessionInfo" EntityType="CatalogService.SessionInfo"/>
+                <EntitySet Name="SampleData" EntityType="CatalogService.SampleData"/>
+                <FunctionImport Name="topSales" Function="CatalogService.topSales" EntitySet="Sales"/>
+            </EntityContainer>
+            <EntityType Name="Sales">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="region" Type="Edm.String" MaxLength="100"/>
+                <Property Name="country" Type="Edm.String" MaxLength="100"/>
+                <Property Name="org" Type="Edm.String" MaxLength="4"/>
+                <Property Name="amount" Type="Edm.Int32"/>
+                <Property Name="comments" Type="Edm.String" MaxLength="100"/>
+                <Property Name="criticality" Type="Edm.Int32"/>
+            </EntityType>
+            <EntityType Name="VSales">
+                <Key>
+                    <PropertyRef Name="REGION"/>
+                </Key>
+                <Property Name="REGION" Type="Edm.String" MaxLength="100" Nullable="false"/>
+                <Property Name="AMOUNT" Type="Edm.Int32"/>
+            </EntityType>
+            <EntityType Name="SessionInfo">
+                <Key>
+                    <PropertyRef Name="ITEM"/>
+                </Key>
+                <Property Name="ITEM" Type="Edm.String" MaxLength="5000" Nullable="false"/>
+                <Property Name="VALUE" Type="Edm.String" MaxLength="5000"/>
+            </EntityType>
+            <EntityType Name="SampleData">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="sapServer" Type="Edm.String" MaxLength="100"/>
+                <Property Name="usage" Type="Edm.String" MaxLength="20"/>
+                <Property Name="databaseServer" Type="Edm.String" MaxLength="10"/>
+                <Property Name="programName" Type="Edm.String" MaxLength="10"/>
+                <Property Name="activeUsersOfTheProgram" Type="Edm.String" MaxLength="100"/>
+                <Property Name="noOfTimesThePgmRunForTheMonth" Type="Edm.String" MaxLength="10"/>
+                <Property Name="executionMonth" Type="Edm.String" MaxLength="10"/>
+                <Property Name="currentRunningTimeinCPUSeconds" Type="Edm.String" MaxLength="10"/>
+                <Property Name="energyConsumptioninMWH" Type="Edm.String" MaxLength="100"/>
+                <Property Name="co2EmissioninMG" Type="Edm.String" MaxLength="100"/>
+            </EntityType>
+            <Action Name="boost" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="CatalogService.Sales"/>
+                <ReturnType Type="CatalogService.Sales"/>
+            </Action>
+            <Function Name="topSales" IsBound="false" IsComposable="false">
+                <Parameter Name="amount" Type="Edm.Int32"/>
+                <ReturnType Type="Collection(CatalogService.Sales)" Nullable="false"/>
+            </Function>
+            <Annotations Target="CatalogService.EntityContainer/VSales">
+                <Annotation Term="Capabilities.DeleteRestrictions">
+                    <Record Type="Capabilities.DeleteRestrictionsType">
+                        <PropertyValue Property="Deletable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.InsertRestrictions">
+                    <Record Type="Capabilities.InsertRestrictionsType">
+                        <PropertyValue Property="Insertable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.UpdateRestrictions">
+                    <Record Type="Capabilities.UpdateRestrictionsType">
+                        <PropertyValue Property="Updatable" Bool="false"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="CatalogService.EntityContainer/SessionInfo">
+                <Annotation Term="Capabilities.DeleteRestrictions">
+                    <Record Type="Capabilities.DeleteRestrictionsType">
+                        <PropertyValue Property="Deletable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.InsertRestrictions">
+                    <Record Type="Capabilities.InsertRestrictionsType">
+                        <PropertyValue Property="Insertable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.UpdateRestrictions">
+                    <Record Type="Capabilities.UpdateRestrictionsType">
+                        <PropertyValue Property="Updatable" Bool="false"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="CatalogService.EntityContainer/SampleData">
+                <Annotation Term="Capabilities.DeleteRestrictions">
+                    <Record Type="Capabilities.DeleteRestrictionsType">
+                        <PropertyValue Property="Deletable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.InsertRestrictions">
+                    <Record Type="Capabilities.InsertRestrictionsType">
+                        <PropertyValue Property="Insertable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.UpdateRestrictions">
+                    <Record Type="Capabilities.UpdateRestrictionsType">
+                        <PropertyValue Property="Updatable" Bool="false"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>
