@@ -23,6 +23,6 @@ service CatalogService @(path : '/catalog')
     function topSales
       (amount: Integer)
       returns many Sales;
-
+@cds.query.limit: { default: 10000, max: 100000 }
 @readonly entity SampleData as SELECT from db.SampleData {*} ;
 };

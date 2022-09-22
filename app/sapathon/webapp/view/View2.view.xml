@@ -61,7 +61,7 @@
                         <Text text="Total CPU Time in seconds" />
                     </Column>
                     <Column hAlign="Center">
-                        <Text text="Energy Consumption in MWH" />
+                        <Text text="Energy Consumption in MWh" />
                     </Column>
                     <Column hAlign="Center">
                         <Text text="Co2 Emission in Milli Gram" />

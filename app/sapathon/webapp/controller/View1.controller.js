@@ -146,7 +146,7 @@ sap.ui.define([
                 }]);
                 oVizFrame4.setVizProperties({
                     title: {
-                        text: 'Energy consumption'
+                        text: 'Monthly energy consumption'
                     },
                     plotArea: {
                         colorPalette: ["#8189F7", "#E8743B", "#19A979", "#ED4A7B", "#8189F7", "#E8743B", "#19A979", "#ED4A7B"]
@@ -185,40 +185,39 @@ sap.ui.define([
                 });
             },
             arrangeData: function (ResponseData) {
+                var that = this;
                 var oModel = new JSONModel();
                 oModel.setSizeLimit(100000);
                 var ViZData = [];
                 var CPUData = [];
                 this.Chart2Data(ResponseData);
-                var pgmName = 0, ResponseDataPgmName = 0, ProgramRunPerMonth = 0, Co2EmissioninGrams = 0,RunningTimeinCPUSeconds=0;
+                var pgmName = 0, ResponseDataPgmName = 0, ProgramRunPerMonth = 0, Co2EmissioninGrams = 0, RunningTimeinCPUSeconds = 0;
                 for (var i = 0; i < ResponseData.length; i++) {
                     if (parseInt(ResponseData[i].currentRunningTimeinCPUSeconds) > 100000) {
                         CPUData.push(ResponseData[i]);
                     }
-                    else {
-                        if (ResponseData[i + 1] && ResponseData[i].executionMonth === ResponseData[i + 1].executionMonth) {
-                            if (ResponseData[i].programName != "") {
-                                ResponseDataPgmName = 1;
-                            }
-                            pgmName += ResponseDataPgmName;
-                            ProgramRunPerMonth += parseInt(ResponseData[i].noOfTimesThePgmRunForTheMonth);
-                            Co2EmissioninGrams += parseInt(ResponseData[i].co2EmissioninMG);
-                            RunningTimeinCPUSeconds += parseInt(ResponseData[i].currentRunningTimeinCPUSeconds);
+                    if (ResponseData[i + 1] && ResponseData[i].executionMonth === ResponseData[i + 1].executionMonth) {
+                        if (ResponseData[i].programName != "") {
+                            ResponseDataPgmName = 1;
                         }
-                        else {
+                        pgmName += ResponseDataPgmName;
+                        ProgramRunPerMonth += parseInt(ResponseData[i].noOfTimesThePgmRunForTheMonth);
+                        Co2EmissioninGrams += parseFloat(ResponseData[i].co2EmissioninMG);
+                        RunningTimeinCPUSeconds += parseInt(ResponseData[i].currentRunningTimeinCPUSeconds);
+                    }
+                    else {
+                        if(ResponseData[i].executionMonth !== null){
                             ViZData.push({
                                 "Month": ResponseData[i].executionMonth,
                                 "Count of custom program": pgmName,
                                 "Run count per month": ProgramRunPerMonth,
                                 "CO2 emission in gram": Co2EmissioninGrams,
-                                "Energy consumption":RunningTimeinCPUSeconds
+                                "Energy consumption in Wh": RunningTimeinCPUSeconds / 1000
                             });
                         }
                     }
-
                 }
-                this.CPUData(CPUData);
-                console.log(ViZData);
+                that.CPUData(CPUData);
                 sap.ui.core.BusyIndicator.hide();
                 oModel.setData(ViZData);
                 this.getView().setModel(oModel, "vizData");
@@ -235,15 +234,21 @@ sap.ui.define([
                         }
                         pgmName1 += ResponseDataPgmName1;
                         ProgramRunPerMonth1 += parseInt(ResponseData[j].noOfTimesThePgmRunForTheMonth);
-                        Co2EmissioninGrams1 += parseInt(ResponseData[j].co2EmissioninMG);
+                        Co2EmissioninGrams1 += parseFloat(ResponseData[j].co2EmissioninMG);
                     }
                     else {
+                        pgmName1 += ResponseDataPgmName1;
+                        ProgramRunPerMonth1 += parseInt(ResponseData[j].noOfTimesThePgmRunForTheMonth);
+                        Co2EmissioninGrams1 += parseFloat(ResponseData[j].co2EmissioninMG);
                         ViZData1.push({
                             "Month": ResponseData[j].executionMonth,
                             "Count of custom program": pgmName1,
                             "Run count per month": ProgramRunPerMonth1,
-                            "CO2 emission in kg": Co2EmissioninGrams1 / 1000
+                            "CO2 emission in g": Co2EmissioninGrams1
                         });
+                        pgmName1 = 0;
+                        ProgramRunPerMonth1 = 0;
+                        Co2EmissioninGrams1 = 0;
                     }
                 }
                 oModel1.setData(ViZData1);
@@ -254,34 +259,54 @@ sap.ui.define([
                 oChart2Model.setSizeLimit(100000);
                 var Chart2Data = [];
                 var pgmName = 0, ResponseDataPgmName = 0, ProgramRunPerMonth = 0, Co2EmissioninGrams = 0;
+                var monthArray = [];
                 for (var i = 0; i < ResponseData.length; i++) {
                     if (ResponseData[i + 1] && ResponseData[i].executionMonth === ResponseData[i + 1].executionMonth) {
                         if (ResponseData[i].programName != "") {
                             ResponseDataPgmName = 1;
                         }
-                        pgmName += ResponseDataPgmName;
-                        ProgramRunPerMonth += parseInt(ResponseData[i].noOfTimesThePgmRunForTheMonth);
-                        Co2EmissioninGrams += parseInt(ResponseData[i].co2EmissioninMG);
+                        monthArray.push(ResponseData[i]);
                     }
                     else {
-                        Chart2Data.push({
-                            "Paramater": "Co2 Emission in g",
-                            "Value":Co2EmissioninGrams,
-                            "Month":ResponseData[i].executionMonth
+                        var topTenData = monthArray.sort(function (x, y) {
+                            var n = y.noOfTimesThePgmRunForTheMonth - x.noOfTimesThePgmRunForTheMonth;
+                            if (n !== 0) {
+                                return n;
+                            }
+
+                            return x - y;
                         });
-                        Chart2Data.push({
-                            "Paramater": "Program Run Per Month",
-                            "Value":ProgramRunPerMonth,
-                            "Month":ResponseData[i].executionMonth
-                        });
-                        Chart2Data.push({
-                            "Paramater": "Program Name",
-                            "Value":pgmName,
-                            "Month":ResponseData[i].executionMonth
-                        });
+                        if (topTenData.length != 0) {
+                            for (var k = 0; k < 10; k++) {
+                                pgmName += ResponseDataPgmName;
+                                ProgramRunPerMonth += parseInt(topTenData[k].noOfTimesThePgmRunForTheMonth);
+                                Co2EmissioninGrams += parseFloat(topTenData[k].co2EmissioninMG);
+                            }
+
+                            Chart2Data.push({
+                                "Paramater": "Co2 Emission in g",
+                                "Value": Co2EmissioninGrams,
+                                "Month": ResponseData[i].executionMonth
+                            });
+                            Chart2Data.push({
+                                "Paramater": "Program run per month",
+                                "Value": ProgramRunPerMonth,
+                                "Month": ResponseData[i].executionMonth
+                            });
+                            Chart2Data.push({
+                                "Paramater": "Program Name",
+                                "Value": pgmName,
+                                "Month": ResponseData[i].executionMonth
+                            });
+                            monthArray = [];
+                            pgmName = 0;
+                            ResponseDataPgmName = 0;
+                            ProgramRunPerMonth = 0;
+                            Co2EmissioninGrams = 0;
+                        }
+
                     }
                 }
-                console.log(Chart2Data);
                 sap.ui.core.BusyIndicator.hide();
                 oChart2Model.setData(Chart2Data);
                 this.getView().setModel(oChart2Model, "Chart2Data");

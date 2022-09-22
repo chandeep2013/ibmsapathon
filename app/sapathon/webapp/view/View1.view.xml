@@ -2,7 +2,7 @@
     <Page id="page" title="{i18n>title}">
         <content>
             <l:VerticalLayout id="containerLayout" width="100%">
-                <l:BlockLayout id="BlockLayout" background="{/selectedBackground}">
+                <l:BlockLayout id="BlockLayout" >
                     <l:BlockLayoutRow accentCells="Accent1">
                         <l:BlockLayoutCell id="Accent1" width="2">
                             <viz:Popover id="idPopOver1" />
@@ -34,7 +34,7 @@
                                             <viz.data:DimensionDefinition name="Month" value="{vizData>Month}" />
                                         </viz.data:dimensions>
                                         <viz.data:measures>
-                                            <viz.data:MeasureDefinition name="Energy consumption" value="{vizData>Energy consumption}" />
+                                            <viz.data:MeasureDefinition name="Energy consumption in Wh" value="{vizData>Energy consumption in Wh}" />
                                             <viz.data:MeasureDefinition name="Count of custom program" value="{vizData>Count of custom program}" />
                                             <viz.data:MeasureDefinition name="Run count per month" value="{vizData>Run count per month}" />
                                         </viz.data:measures>
@@ -42,7 +42,7 @@
                                 </viz:dataset>
                                 <viz:feeds>
                                     <viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Count of custom program" />
-                                    <viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Run count per month,Energy consumption" />
+                                    <viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Run count per month,Energy consumption in Wh" />
                                     <viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Month" />
                                 </viz:feeds>
                             </viz:VizFrame>
@@ -79,15 +79,15 @@
                                         </viz.data:dimensions>
                                         <viz.data:measures>
                                             <viz.data:MeasureDefinition name="Count of custom program" value="{vizData1>Count of custom program}" />
-                                            <viz.data:MeasureDefinition name="CO2 emission in kg" value="{vizData1>CO2 emission in kg}" />
+                                            <viz.data:MeasureDefinition name="CO2 emission in g" value="{vizData1>CO2 emission in g}" />
                                             <viz.data:MeasureDefinition name="Run count per month" value="{vizData1>Run count per month}" />
                                         </viz.data:measures>
                                     </viz.data:FlattenedDataset>
                                 </viz:dataset>
                                 <viz:feeds>
-                                    <viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Run count per month" />
-                                    <viz.feeds:FeedItem uid="valueAxis2" type="Measure" values="CO2 emission in kg" />
-                                    <viz.feeds:FeedItem uid="bubbleWidth" type="Measure" values="Count of custom program" />
+                                    <viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Count of custom program" />
+                                    <viz.feeds:FeedItem uid="valueAxis2" type="Measure" values="Run count per month" />
+                                    <viz.feeds:FeedItem uid="bubbleWidth" type="Measure" values="CO2 emission in g" />
                                     <viz.feeds:FeedItem uid="color" type="Dimension" values="Month" />
                                 </viz:feeds>
                             </viz:VizFrame>
