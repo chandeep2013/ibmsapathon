@@ -17,17 +17,26 @@ sap.ui.define([
             },
             _onRouterMatched: function (oEvent) {
                 var Param = oEvent.getParameter("arguments").month;
-                this.onPressSubmit(Param);
+                var Top10 = oEvent.getParameter("arguments").top10;
+                this.onPressSubmit(Param,Top10);
             },
-            onPressSubmit:function(val){
+            onPressSubmit:function(val,Top10){
                 var that = this;
                 if(val.length === 3){
                    var Month = val;
+                   var usage = "";
+                   var programName = "";
                 }
                 else{
                     Month = this.getView().byId("idExecutionMonth").getValue();
-                    var usage = this.getView().byId("idUsage").getValue();
-                    var programName = this.getView().byId("idProgramName").getValue();
+                    usage = this.getView().byId("idUsage").getValue();
+                    programName = this.getView().byId("idProgramName").getValue();
+                }
+                if(Top10 == "true"){
+                    var url = "https://port4004-workspaces-ws-mgqj6.us10.trial.applicationstudio.cloud.sap/v2/catalog/SampleData?$format=json&$filter=executionMonth eq '"+Month+"' or programName eq '"+programName+"' or usage eq '"+usage+"'&$orderby=noOfTimesThePgmRunForTheMonth desc&$top=10"
+                }
+                else{
+                    url = "https://port4004-workspaces-ws-mgqj6.us10.trial.applicationstudio.cloud.sap/v2/catalog/SampleData?$format=json&$filter=executionMonth eq '"+Month+"' or programName eq '"+programName+"' or usage eq '"+usage+"'";
                 }
                 sap.ui.core.BusyIndicator.show(-1);
                 var oModel = new JSONModel();
@@ -35,7 +44,7 @@ sap.ui.define([
                 $.ajax({
                     method: "GET",
                     contentType: "application/json",
-                    url: "https://port4004-workspaces-ws-mgqj6.us10.trial.applicationstudio.cloud.sap/v2/catalog/SampleData?$format=json&$filter=executionMonth eq '"+Month+"' or programName eq '"+programName+"' or usage eq '"+usage+"'",
+                    url: url,
                     async: true,
                     success: function (result) {
                         that.getView().byId("idMonthsDetails").setText(Month + "month - records("+result.d.results.length+")");
@@ -45,6 +54,7 @@ sap.ui.define([
                     },
                     error: function (errorThrown) {
                         console.log(errorThrown);
+                        sap.ui.core.BusyIndicator.hide();
                     }
                 });
             },

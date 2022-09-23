@@ -15,158 +15,62 @@ sap.ui.define([
                 this.oRouter = this.oOwnerComponent.getRouter();
                 this.oRouter.getRoute("View1").attachPatternMatched(this._onvizCharts, this);
                 var that = this;
-                var oVizFrame1 = this.getView().byId("idVizFrame1");
-                var oPopOver1 = this.getView().byId("idPopOver1");
-                oPopOver1.connect(oVizFrame1.getVizUid());
-                oPopOver1.setActionItems([{
-                    type: 'action',
-                    text: 'View Details',
-                    press: function (evt) {
-                        var selectedMonth = evt.getSource().getParent().getParent().getParent().getContent()[0]._oDimLabel.mProperties.text;
-                        var oRouter = sap.ui.core.UIComponent.getRouterFor(that);
-                        oRouter.navTo("View2", {
-                            month: selectedMonth
-                        });
-                    }
-                }]);
-                oVizFrame1.setVizProperties({
-                    title: {
-                        text: 'Monthly CO2 emission'
-                    },
-                    plotArea: {
-                        colorPalette: ["#8189F7", "#E8743B", "#19A979", "#ED4A7B", "#8189F7", "#E8743B", "#19A979", "#ED4A7B"]
-                    },
-                    valueAxis: {
-                        title: {
-                            visible: false
-                        }
-                    },
-                    valueAxis2: {
-                        title: {
-                            visible: false
-                        }
-                    },
-                    categoryAxis: {
-                        title: {
-                            visible: false
-                        }
-                    }
-                });
-                var oVizFrame2 = this.getView().byId("idVizFrame2");
-                var oPopOver2 = this.getView().byId("idPopOver2");
-                oPopOver2.connect(oVizFrame2.getVizUid());
-                oPopOver2.setActionItems([{
-                    type: 'action',
-                    text: 'View Details',
-                    press: function (evt) {
-                        var selectedMonth = evt.getSource().getParent().getParent().getParent().getContent()[0]._oDimLabel.mProperties.text;
-                        var oRouter = sap.ui.core.UIComponent.getRouterFor(that);
-                        oRouter.navTo("View2", {
-                            month: selectedMonth
-                        });
-                    }
-                }]);
-                oVizFrame2.setVizProperties({
-                    title: {
-                        text: 'CPU time > 100K Seconds'
-                    },
-                    plotArea: {
-                        dataShape: {
-                            primaryAxis: ['bar', 'bar', 'line', 'line'],
-                            secondaryAxis: ['line', 'line']
+                var vizFrameArray = ["idVizFrame1","idVizFrame2","idVizFrame3","idVizFrame4"];
+                for(var i=0;i<vizFrameArray.length;i++){
+                    var frame = this.getView().byId(vizFrameArray[i]);
+                    frame.setVizProperties({
+                        plotArea: {
+                            colorPalette: ["#8189F7", "#E8743B", "#19A979", "#ED4A7B", "#8189F7", "#E8743B", "#19A979", "#ED4A7B"]
                         },
-                        colorPalette: ["#8189F7", "#E8743B", "#19A979", "#ED4A7B", "#8189F7", "#E8743B", "#19A979", "#ED4A7B"]
-                    },
-                    valueAxis: {
-                        title: {
-                            visible: false
+                        valueAxis: {
+                            title: {
+                                visible: false
+                            }
+                        },
+                        valueAxis2: {
+                            title: {
+                                visible: false
+                            }
+                        },
+                        categoryAxis: {
+                            title: {
+                                visible: false
+                            }
                         }
-                    },
-                    valueAxis2: {
-                        title: {
-                            visible: false
-                        }
-                    },
-                    categoryAxis: {
-                        title: {
-                            visible: false
-                        }
+                    });
+                    if(vizFrameArray[i] === "idVizFrame1"){
+                        var oPopOver = this.getView().byId("idPopOver1");
+                        oPopOver.connect(frame.getVizUid());
                     }
-                });
-                var oVizFrame3 = this.getView().byId("idVizFrame3");
-                var oPopOver3 = this.getView().byId("idPopOver3");
-                oPopOver3.connect(oVizFrame3.getVizUid());
-                oPopOver3.setActionItems([{
-                    type: 'action',
-                    text: 'View Details',
-                    press: function (evt) {
-                        var selectedMonth = evt.getSource().getParent().getParent().getParent().getContent()[0]._oDimLabel.mProperties.text;
-                        var oRouter = sap.ui.core.UIComponent.getRouterFor(that);
-                        oRouter.navTo("View2", {
-                            month: selectedMonth.split("-")[1].trim()
-                        });
+                    else if(vizFrameArray[i] === "idVizFrame2"){
+                        var oPopOver = this.getView().byId("idPopOver2");
+                        oPopOver.connect(frame.getVizUid());
                     }
-                }]);
-                oVizFrame3.setVizProperties({
-                    title: {
-                        text: 'CO2 emission of top 10 multiple times executed programs'
-                    },
-                    plotArea: {
-                        colorPalette: ["#8189F7", "#E8743B", "#19A979", "#ED4A7B", "#8189F7", "#E8743B", "#19A979", "#ED4A7B"]
-                    },
-                    valueAxis: {
-                        title: {
-                            visible: false
-                        }
-                    },
-                    valueAxis2: {
-                        title: {
-                            visible: false
-                        }
-                    },
-                    categoryAxis: {
-                        title: {
-                            visible: false
-                        }
+                    else if(vizFrameArray[i] === "idVizFrame3"){
+                        var oPopOver = this.getView().byId("idPopOver3");
+                        oPopOver.connect(frame.getVizUid());
                     }
-                });
-                var oVizFrame4 = this.getView().byId("idVizFrame4");
-                var oPopOver4 = this.getView().byId("idPopOver4");
-                oPopOver4.connect(oVizFrame4.getVizUid());
-                oPopOver4.setActionItems([{
-                    type: 'action',
-                    text: 'View Details',
-                    press: function (evt) {
-                        var selectedMonth = evt.getSource().getParent().getParent().getParent().getContent()[0]._oDimLabel.mProperties.text;
-                        var oRouter = sap.ui.core.UIComponent.getRouterFor(that);
-                        oRouter.navTo("View2", {
-                            month: selectedMonth.split("-")[1].trim()
-                        });
+                    else if(vizFrameArray[i] === "idVizFrame4"){
+                        var oPopOver = this.getView().byId("idPopOver4");
+                        oPopOver.connect(frame.getVizUid());
                     }
-                }]);
-                oVizFrame4.setVizProperties({
-                    title: {
-                        text: 'Monthly energy consumption'
-                    },
-                    plotArea: {
-                        colorPalette: ["#8189F7", "#E8743B", "#19A979", "#ED4A7B", "#8189F7", "#E8743B", "#19A979", "#ED4A7B"]
-                    },
-                    valueAxis: {
-                        title: {
-                            visible: false
+                    oPopOver.setActionItems([{
+                        type: 'action',
+                        text: 'View Details',
+                        press: function (evt) {
+                            var selectedMonth = evt.getSource().getParent().getParent().getParent().getContent()[0]._oDimLabel.mProperties.text;
+                            var monthParam = selectedMonth.length > 3 ? selectedMonth.split("-")[1].trim() : selectedMonth;
+                            var chart2Param = evt.getSource().getParent().getParent().getParent().getId().includes("popover2");
+                            var oRouter = sap.ui.core.UIComponent.getRouterFor(that);
+                            oRouter.navTo("View2", {
+                                month: monthParam,
+                                top10 :chart2Param
+                            });
                         }
-                    },
-                    valueAxis2: {
-                        title: {
-                            visible: false
-                        }
-                    },
-                    categoryAxis: {
-                        title: {
-                            visible: false
-                        }
-                    }
-                });
+                    }]);
+                }
+                
+                
             },
             _onvizCharts: function () {
                 var that = this;

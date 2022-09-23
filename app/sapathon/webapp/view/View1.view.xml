@@ -6,7 +6,7 @@
                     <l:BlockLayoutRow accentCells="Accent1">
                         <l:BlockLayoutCell id="Accent1" width="2">
                             <viz:Popover id="idPopOver1" />
-                            <viz:VizFrame id="idVizFrame1" uiConfig="{applicationSet:'fiori'}" vizType="column" vizProperties="{title:{text:'Energy Consumption'}}" class="vizClass">
+                            <viz:VizFrame id="idVizFrame1" uiConfig="{applicationSet:'fiori'}" vizType="column" vizProperties="{title:{text:'Monthly CO2 emission'}}" class="vizClass">
                                 <viz:dataset>
                                     <viz.data:FlattenedDataset data="{vizData>/}">
                                         <viz.data:dimensions>
@@ -27,7 +27,7 @@
                         </l:BlockLayoutCell>
                         <l:BlockLayoutCell width="2">
                             <viz:Popover id="idPopOver4" />
-                            <viz:VizFrame id="idVizFrame4" uiConfig="{applicationSet:'fiori'}" vizType="column" vizProperties="{title:{text:'Energy Consumption'}}" class="vizClass">
+                            <viz:VizFrame id="idVizFrame4" uiConfig="{applicationSet:'fiori'}" vizType="column" vizProperties="{title:{text:'Monthly energy consumption'}}" class="vizClass">
                                 <viz:dataset>
                                     <viz.data:FlattenedDataset data="{vizData>/}">
                                         <viz.data:dimensions>
@@ -51,7 +51,7 @@
                     <l:BlockLayoutRow accentCells="Accent2">
                         <l:BlockLayoutCell id="Accent2" width="2">
                             <viz:Popover id="idPopOver3" />
-                            <viz:VizFrame id="idVizFrame3" uiConfig="{applicationSet:'fiori'}" vizType="bar" vizProperties="{title:{text:'Energy Consumption'}}" class="vizClass">
+                            <viz:VizFrame id="idVizFrame3" uiConfig="{applicationSet:'fiori'}" vizType="bar" vizProperties="{title:{text:'CO2 emission of top 10 multiple times executed programs'}}" class="vizClass">
                                 <viz:dataset>
                                     <viz.data:FlattenedDataset data="{Chart2Data>/}">
                                         <viz.data:dimensions>
@@ -71,7 +71,7 @@
                         </l:BlockLayoutCell>
                         <l:BlockLayoutCell width="2">
                             <viz:Popover id="idPopOver2" />
-                            <viz:VizFrame id="idVizFrame2" uiConfig="{applicationSet:'fiori'}" vizType="bubble" vizProperties="{title:{text:''}}" class="vizClass">
+                            <viz:VizFrame id="idVizFrame2" uiConfig="{applicationSet:'fiori'}" vizType="bubble" vizProperties="{title:{text:'CPU time > 100K Seconds'}}" class="vizClass">
                                 <viz:dataset>
                                     <viz.data:FlattenedDataset data="{vizData1>/}">
                                         <viz.data:dimensions>
