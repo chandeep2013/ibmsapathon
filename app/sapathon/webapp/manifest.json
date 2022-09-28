@@ -122,7 +122,7 @@
                 },
                 {
                     "name": "View2",
-                    "pattern": "View2{month}/:top10:",
+                    "pattern": "View2:month:/:top10:",
                     "target": "View2"
                 }
             ],

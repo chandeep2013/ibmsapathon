@@ -1,8 +1,50 @@
-<mvc:View controllerName="com.sap.sapathon.controller.View1" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:form="sap.ui.layout.form" xmlns:viz="sap.viz.ui5.controls" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds" xmlns:viz.data="sap.viz.ui5.data">
-    <Page id="page" title="{i18n>title}">
+<mvc:View
+    controllerName="com.sap.sapathon.controller.View1"
+    xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:viz="sap.viz.ui5.controls"
+    xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+    xmlns:viz.data="sap.viz.ui5.data"
+>
+    <Page id="page" >
+        <customHeader >
+            <Bar>
+                <contentLeft>
+                    <Image src="model/IBM-Logo.png" width="100px" />
+                    <Text text="{i18n>title}" class="titleClass" />
+                </contentLeft>
+
+                <contentMiddle>
+                    <!--CO2Class-->
+                </contentMiddle>
+                <contentRight>
+                    <GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout" header="Total CO2 emission">
+                        <TileContent>
+                            <VBox>
+                                <ImageContent src="model/CO2.svg" />
+                                <Text id="idTotalCO2" width="140px" />
+                            </VBox>
+                        </TileContent>
+                    </GenericTile>
+                    <GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout " header="Total energy consumption">
+                        <TileContent>
+                            <VBox>
+                                <ImageContent src="model/energy.jpg" />
+                                <Text id="idTotalEnergy" width="140px" />
+                            </VBox>
+                        </TileContent>
+                    </GenericTile>
+                    <Button icon="sap-icon://action" press="onNavTo" tooltip="Navigate to next screen"/>
+                </contentRight>
+            </Bar>
+        </customHeader>
         <content>
             <l:VerticalLayout id="containerLayout" width="100%">
-                <l:BlockLayout id="BlockLayout" >
+                <l:BlockLayout id="BlockLayout">
                     <l:BlockLayoutRow accentCells="Accent1">
                         <l:BlockLayoutCell id="Accent1" width="2">
                             <viz:Popover id="idPopOver1" />
@@ -27,7 +69,7 @@
                         </l:BlockLayoutCell>
                         <l:BlockLayoutCell width="2">
                             <viz:Popover id="idPopOver4" />
-                            <viz:VizFrame id="idVizFrame4" uiConfig="{applicationSet:'fiori'}" vizType="column" vizProperties="{title:{text:'Monthly energy consumption'}}" class="vizClass">
+                            <viz:VizFrame id="idVizFrame4" uiConfig="{applicationSet:'fiori'}" vizType='donut' vizProperties="{title:{text:'Monthly energy consumption'}}" class="vizClass" >
                                 <viz:dataset>
                                     <viz.data:FlattenedDataset data="{vizData>/}">
                                         <viz.data:dimensions>
@@ -35,15 +77,12 @@
                                         </viz.data:dimensions>
                                         <viz.data:measures>
                                             <viz.data:MeasureDefinition name="Energy consumption in Wh" value="{vizData>Energy consumption in Wh}" />
-                                            <viz.data:MeasureDefinition name="Count of custom program" value="{vizData>Count of custom program}" />
-                                            <viz.data:MeasureDefinition name="Run count per month" value="{vizData>Run count per month}" />
                                         </viz.data:measures>
                                     </viz.data:FlattenedDataset>
                                 </viz:dataset>
                                 <viz:feeds>
-                                    <viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Count of custom program" />
-                                    <viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Run count per month,Energy consumption in Wh" />
-                                    <viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Month" />
+                                    <viz.feeds:FeedItem uid="size" type="Measure" values="Energy consumption in Wh" />
+                                    <viz.feeds:FeedItem uid="color" type="Dimension" values="Month" />
                                 </viz:feeds>
                             </viz:VizFrame>
                         </l:BlockLayoutCell>

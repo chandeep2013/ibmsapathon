@@ -1,10 +1,28 @@
 <mvc:View controllerName="com.sap.sapathon.controller.View2" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
-    <Page title="Details" showNavButton="true" navButtonPress="onNavBack">
+    <Page >
+     <customHeader >
+            <Bar>
+                <contentLeft>
+                    <Button icon="sap-icon://nav-back" press="onNavBack" />
+                    <Text text="System usage data for CO2 emission" class="titleClass" />
+                </contentLeft>
+                <contentMiddle>
+                    <!--CO2Class-->
+                </contentMiddle>
+                <contentRight>
+                    <Image src="model/IBM-Logo.png" width="100px" />
+                </contentRight>
+            </Bar>
+        </customHeader>
         <content>
             <VBox class="sapUiSmallMargin">
                 <f:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="1" singleContainerFullSize="false">
                     <f:content>
                         <core:Title text="" />
+                        <Label text="Program name" />
+                        <Input id="idProgramName" value="" placeholder="Enter program name" />
+                        <Label text="Program run for month" />
+                        <Input id="idProgramRunPerMonth" value="" placeholder="Enter program run per month" type="Number" />
                         <Label text="Usage" />
                         <ComboBox id="idUsage" placeholder="Select">
                             <items>
@@ -12,12 +30,14 @@
                                 <core:Item key="TEST" text="TEST" />
                                 <core:Item key="DEV" text="DEV" />
                             </items>
-			            </ComboBox>
-                        <Label text="Program Name" />
-                        <Input id="idProgramName" value="" placeholder="Enter program name"/>
+                        </ComboBox>
                         <core:Title text="" />
+                        <Label text="Co2 emission in milli gram" />
+                        <Input id="idCO2EMission" value="" placeholder="Enter Co2 emission in milli gram" type="Number" />
+                        <Label text="Total CPU time in seconds" />
+                        <Input id="idTotalCPUtimeinseconds" value="" placeholder="Enter total CPU time in seconds" type="Number" />
                         <Label text="Execution Month" />
-                        <ComboBox id="idExecutionMonth" placeholder="Select">
+                        <MultiComboBox id="idExecutionMonth" placeholder="Select">
                             <items>
                                 <core:Item key="Jan" text="Jan" />
                                 <core:Item key="Feb" text="Feb" />
@@ -32,55 +52,62 @@
                                 <core:Item key="Nov" text="Nov" />
                                 <core:Item key="Dec" text="Dec" />
                             </items>
-			            </ComboBox>
-                        <Label  />
-                        <Button text="Submit" press="onPressSubmit" width="100px"/>
+                        </MultiComboBox>
                     </f:content>
                 </f:SimpleForm>
             </VBox>
-            <Table id="idProductsTable" inset="false" items="{Tabledata>/}" sticky="ColumnHeaders" growing="true" growingThreshold="50" growingScrollToLoad="true">
-                <infoToolbar>
-                    <OverflowToolbar>
-                        <Label id="idMonthsDetails" text="" />
-                    </OverflowToolbar>
-                </infoToolbar>
-                <columns>
-                    <Column width="12em">
-                        <Text text="Usage" />
-                    </Column>
-                    <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="Program Name" />
-                    </Column>
-                    <Column minScreenWidth="Desktop" demandPopin="true" hAlign="Center">
-                        <Text text="Program Run For Month" />
-                    </Column>
-                    <Column minScreenWidth="Desktop" demandPopin="true" hAlign="Center">
-                        <Text text="Execution Month" />
-                    </Column>
-                    <Column hAlign="Center">
-                        <Text text="Total CPU Time in seconds" />
-                    </Column>
-                    <Column hAlign="Center">
-                        <Text text="Energy Consumption in MWh" />
-                    </Column>
-                    <Column hAlign="Center">
-                        <Text text="Co2 Emission in Milli Gram" />
-                    </Column>
-                </columns>
-                <items>
-                    <ColumnListItem vAlign="Middle">
-                        <cells>
-                            <Text text="{Tabledata>usage}" />
-                            <Text text="{Tabledata>programName}" />
-                            <Text text="{Tabledata>noOfTimesThePgmRunForTheMonth}" />
-                            <Text text="{Tabledata>executionMonth}" />
-                            <Text text="{Tabledata>currentRunningTimeinCPUSeconds}" />
-                            <Text text="{Tabledata>energyConsumptioninMWH}" />
-                            <Text text="{Tabledata>co2EmissioninMG}" />
-                        </cells>
-                    </ColumnListItem>
-                </items>
-            </Table>
+            <ScrollContainer horizontal="fasle" vertical="true" height="485px" focusable="false">
+                <Table id="idProductsTable" inset="false" items="{Tabledata>/}" sticky="ColumnHeaders,HeaderToolbar" growing="true" growingThreshold="50" growingScrollToLoad="true">
+                    <headerToolbar>
+                        <OverflowToolbar>
+                            <Label id="idMonthsDetails" text="" />
+                            <ToolbarSpacer />
+                            <Button text="Submit" press="onPressSubmit"/>
+                            <Button icon="sap-icon://excel-attachment" press="onDataExport" tooltip="on download data"/>
+                        </OverflowToolbar>
+                    </headerToolbar>
+                    <columns>
+                        <Column width="8rem">
+                            <Text text="Carbon footprint" />
+                        </Column>
+                        <Column demandPopin="true" width="6rem">
+                            <Text text="Usage" />
+                        </Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true" width="10rem">
+                            <Text text="Program name" />
+                        </Column>
+                        <Column minScreenWidth="Desktop" demandPopin="true" hAlign="Center">
+                            <Text text="Program run for month" />
+                        </Column>
+                        <Column minScreenWidth="Desktop" demandPopin="true" hAlign="Center">
+                            <Text text="Execution month" />
+                        </Column>
+                        <Column hAlign="Center">
+                            <Text text="Total CPU time in seconds" />
+                        </Column>
+                        <Column hAlign="Center">
+                            <Text text="Energy consumption in MWh" />
+                        </Column>
+                        <Column hAlign="Center">
+                            <Text text="Co2 emission in milli gram" />
+                        </Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem vAlign="Middle">
+                            <cells>
+                                <Text text="Yes/No" />
+                                <Text text="{Tabledata>usage}" />
+                                <Text text="{Tabledata>programName}" />
+                                <Text text="{Tabledata>noOfTimesThePgmRunForTheMonth}" />
+                                <Text text="{Tabledata>executionMonth}" />
+                                <Text text="{Tabledata>currentRunningTimeinCPUSeconds}" />
+                                <Text text="{Tabledata>currentRunningTimeinCPUSeconds}" />
+                                <Text text="{Tabledata>co2EmissioninMG}" />
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </ScrollContainer>
         </content>
     </Page>
 </mvc:View>

@@ -49,6 +49,11 @@ sap.ui.define([
                     else if(vizFrameArray[i] === "idVizFrame3"){
                         var oPopOver = this.getView().byId("idPopOver3");
                         oPopOver.connect(frame.getVizUid());
+                        frame.setVizProperties({
+                            legend : {
+                                visible: false
+                                }
+                        });
                     }
                     else if(vizFrameArray[i] === "idVizFrame4"){
                         var oPopOver = this.getView().byId("idPopOver4");
@@ -69,8 +74,10 @@ sap.ui.define([
                         }
                     }]);
                 }
-                
-                
+            },
+            onNavTo:function(){
+                var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+                oRouter.navTo("View2");
             },
             _onvizCharts: function () {
                 var that = this;
@@ -96,7 +103,12 @@ sap.ui.define([
                 var CPUData = [];
                 this.Chart2Data(ResponseData);
                 var pgmName = 0, ResponseDataPgmName = 0, ProgramRunPerMonth = 0, Co2EmissioninGrams = 0, RunningTimeinCPUSeconds = 0;
+                var totalCo2Emission = 0, totalEnergyConsumption = 0;
                 for (var i = 0; i < ResponseData.length; i++) {
+                    totalCo2Emission += parseFloat(ResponseData[i].co2EmissioninMG);
+                    if(ResponseData[i].currentRunningTimeinCPUSeconds !="" && ResponseData[i].currentRunningTimeinCPUSeconds!== null){
+                        totalEnergyConsumption += parseInt(ResponseData[i].currentRunningTimeinCPUSeconds);
+                    }
                     if (parseInt(ResponseData[i].currentRunningTimeinCPUSeconds) > 100000) {
                         CPUData.push(ResponseData[i]);
                     }
@@ -121,6 +133,10 @@ sap.ui.define([
                         }
                     }
                 }
+                var TotalCO2 = Math.round(totalCo2Emission)+ " grams";
+                var TotalEnergy = " "+ Math.round(totalEnergyConsumption/1000)+ " Wh";
+                this.getView().byId("idTotalCO2").setText(TotalCO2);
+                this.getView().byId("idTotalEnergy").setText(TotalEnergy);
                 that.CPUData(CPUData);
                 sap.ui.core.BusyIndicator.hide();
                 oModel.setData(ViZData);

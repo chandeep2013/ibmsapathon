@@ -1,11 +1,88 @@
-.sapMBarTitleAlignAuto .sapMBarPH {
+/*.sapMBarTitleAlignAuto .sapMBarPH {
     justify-content: center !important;
-}
+}*/
 .sapUiBlockLayoutSizeXL:not(.sapUiBlockLayoutKeepFontSize) .sapUiBlockCellContent {
     padding: 0.5rem 1rem !important;
     font-size: 1rem !important;
 }
+.titleClass {
+    margin-left: 0.5rem !important;
+    font-weight: bold;
+    color: green;
+    font-size: 22px !important;
+}
+.CO2Class{
+    margin-left: 34rem !important;
+}
+.titleClass .sapMIBar-CTX .sapMTitle {
+    font-size: 20px;
+    color: green;
+    text-shadow: none;
+}
+
 .vizClass{
     width: 47rem !important;
-    height: 20rem !important;
+    height: 19.5rem !important;
+}/*18rem*/
+.sapUiSizeCompact .sapMPageHeader .sapMIBar, .sapUiSizeCompact .sapMPageFooter .sapMIBar {
+    height: 4.9rem;
+}
+.sapUiSizeCompact .sapMPageHeader .sapMIBar .sapMBarLeft, .sapUiSizeCompact .sapMPageFooter .sapMIBar .sapMBarLeft, .sapUiSizeCompact .sapMPageHeader .sapMIBar .sapMBarRight, .sapUiSizeCompact .sapMPageFooter .sapMIBar .sapMBarRight, .sapUiSizeCompact .sapMPageHeader .sapMIBar .sapMBarPH, .sapUiSizeCompact .sapMPageFooter .sapMIBar .sapMBarPH {
+    height: 4.7rem;
+    padding-top: 1rem;
+    padding-bottom: 0.25rem;
+}
+
+.tileLayout {
+	float: left;
+}
+.sapMGTHdrContent {
+    height: 1.3rem;
+    padding-top: 0rem;
+}
+.sapMGT.TwoByHalf {
+    width: 22.5rem;
+    height: 3rem;
+}
+.sapUiTinyMarginTop {
+    margin-top: -0.5rem !important;
+}
+.TwoByHalf .sapMGTContent .sapMTileCnt .sapMTileCntContent .sapMImageContentImageIcon {
+    max-height: 3rem;
+    margin-top: -14px;
+}
+.sapMImageContent {
+    margin-top: -5px;
+    position: absolute;
+    height: 2.875rem;
+    width: 4rem;
+    outline: none;
+}
+.sapMGTContent {
+    height: 2.375rem;
+}
+
+.sapMGTSubHdrTxt>.sapMText, .sapMGTSubHdrTxt {
+    margin-right: -2rem;
+}
+.sapMTileCnt {
+    margin-top: -1rem;
+}
+.sapMGT.OneByOne {
+    width: 15rem;
+    height: 4rem;
+}
+.sapMPage>.sapMPageHeader+section, .sapMPage>.sapMPageSubHeader+section, .sapMPage>.sapMPageHeader+.sapUiHiddenPlaceholder+section {
+    top: 3.5rem;
+}
+.sapMGTHdrTxt>.sapMText {
+    text-align: center !important;
+}
+.sapUiSizeCompact .sapUiFormContainerTitle>.sapUiFormTitle {
+    display: none;
+}
+
+.sapUiRespGridMedia-Std-Phone.sapUiFormResGridCont>.sapUiFormElementLbl:not(.sapUiRespGridSpanS12)>.sapMLabel, .sapUiRespGridMedia-Std-Tablet.sapUiFormResGridCont>.sapUiFormElementLbl:not(.sapUiRespGridSpanM12)>.sapMLabel, .sapUiRespGridMedia-Std-Desktop.sapUiFormResGridCont>.sapUiFormElementLbl:not(.sapUiRespGridSpanL12)>.sapMLabel, .sapUiRespGridMedia-Std-LargeDesktop.sapUiFormResGridCont>.sapUiFormElementLbl:not(.sapUiRespGridSpanXL12)>.sapMLabel {
+    text-align: left !important;
+    float: none;
 }
