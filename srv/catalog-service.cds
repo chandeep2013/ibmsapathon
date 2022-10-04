@@ -1,28 +1,15 @@
 using {app.db as db} from '../db/data-model';
-using {CV_SALES, CV_SESSION_INFO} from '../db/data-model';
-service CatalogService @(path : '/catalog')
-{
-    entity Sales
-      as select * from db.Sales
-      actions {
-        action boost() returns Sales;
-      }
-    ;
 
+/*using {CV_SALES, CV_SESSION_INFO} from '../db/data-model';*/
+service CatalogService @(path : '/catalog') {
 
+    @cds.query.limit : {
+        default : 10000,
+        max     : 100000
+    }
     @readonly
-    entity VSales
-      as select * from CV_SALES
-    ;
-
-    @readonly
-    entity SessionInfo
-      as select * from CV_SESSION_INFO
-    ;
-
-    function topSales
-      (amount: Integer)
-      returns many Sales;
-@cds.query.limit: { default: 10000, max: 100000 }
-@readonly entity SampleData as SELECT from db.SampleData {*} ;
+    entity SampleData as
+        select from db.SampleData {
+            *
+        };
 };

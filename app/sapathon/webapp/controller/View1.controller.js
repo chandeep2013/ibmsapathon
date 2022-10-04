@@ -20,7 +20,10 @@ sap.ui.define([
                     var frame = this.getView().byId(vizFrameArray[i]);
                     frame.setVizProperties({
                         plotArea: {
-                            colorPalette: ["#8189F7", "#E8743B", "#19A979", "#ED4A7B", "#8189F7", "#E8743B", "#19A979", "#ED4A7B"]
+                            colorPalette: ["#8189F7", "#E8743B", "#19A979", "#ED4A7B", "#8189F7", "#E8743B", "#19A979", "#ED4A7B"],
+                            dataLabel: {
+                                visible: true
+                            }
                         },
                         valueAxis: {
                             title: {

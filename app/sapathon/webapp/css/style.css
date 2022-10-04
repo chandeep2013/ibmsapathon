@@ -9,7 +9,7 @@
     margin-left: 0.5rem !important;
     font-weight: bold;
     color: green;
-    font-size: 22px !important;
+    font-size: 35px !important;
 }
 .CO2Class{
     margin-left: 34rem !important;
@@ -85,4 +85,7 @@
 .sapUiRespGridMedia-Std-Phone.sapUiFormResGridCont>.sapUiFormElementLbl:not(.sapUiRespGridSpanS12)>.sapMLabel, .sapUiRespGridMedia-Std-Tablet.sapUiFormResGridCont>.sapUiFormElementLbl:not(.sapUiRespGridSpanM12)>.sapMLabel, .sapUiRespGridMedia-Std-Desktop.sapUiFormResGridCont>.sapUiFormElementLbl:not(.sapUiRespGridSpanL12)>.sapMLabel, .sapUiRespGridMedia-Std-LargeDesktop.sapUiFormResGridCont>.sapUiFormElementLbl:not(.sapUiRespGridSpanXL12)>.sapMLabel {
     text-align: left !important;
     float: none;
+}
+.sapMLabel .sapMLabelColonAndRequired {
+    float: right !important;
 }

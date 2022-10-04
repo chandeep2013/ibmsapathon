@@ -27,8 +27,8 @@
                         <ComboBox id="idUsage" placeholder="Select">
                             <items>
                                 <core:Item key="PROD" text="PROD" />
-                                <core:Item key="TEST" text="TEST" />
-                                <core:Item key="DEV" text="DEV" />
+                                <core:Item key="TEST" text="TEST" enabled="false"/>
+                                <core:Item key="DEV" text="DEV" enabled="false"/>
                             </items>
                         </ComboBox>
                         <core:Title text="" />
@@ -41,16 +41,16 @@
                             <items>
                                 <core:Item key="Jan" text="Jan" />
                                 <core:Item key="Feb" text="Feb" />
-                                <core:Item key="Mar" text="Mar" />
-                                <core:Item key="Apr" text="Apr" />
-                                <core:Item key="May" text="May" />
-                                <core:Item key="Jun" text="Jun" />
-                                <core:Item key="Jul" text="Jul" />
-                                <core:Item key="Aug" text="Aug" />
-                                <core:Item key="Sept" text="Sept" />
-                                <core:Item key="Oct" text="Oct" />
-                                <core:Item key="Nov" text="Nov" />
-                                <core:Item key="Dec" text="Dec" />
+                                <core:Item key="Mar" text="Mar" enabled="false"/>
+                                <core:Item key="Apr" text="Apr" enabled="false"/>
+                                <core:Item key="May" text="May" enabled="false"/>
+                                <core:Item key="Jun" text="Jun" enabled="false"/>
+                                <core:Item key="Jul" text="Jul" enabled="false"/>
+                                <core:Item key="Aug" text="Aug" enabled="false"/>
+                                <core:Item key="Sept" text="Sept" enabled="false"/>
+                                <core:Item key="Oct" text="Oct" enabled="false"/>
+                                <core:Item key="Nov" text="Nov" enabled="false"/>
+                                <core:Item key="Dec" text="Dec" enabled="false"/>
                             </items>
                         </MultiComboBox>
                     </f:content>
@@ -99,7 +99,7 @@
                                 <Text text="{Tabledata>usage}" />
                                 <Text text="{Tabledata>programName}" />
                                 <Text text="{Tabledata>noOfTimesThePgmRunForTheMonth}" />
-                                <Text text="{Tabledata>executionMonth}" />
+                                <Text text="{ parts: [ {path: 'Tabledata>executionMonth'}], formatter: '.formatter.MonthName' }" />
                                 <Text text="{Tabledata>currentRunningTimeinCPUSeconds}" />
                                 <Text text="{Tabledata>currentRunningTimeinCPUSeconds}" />
                                 <Text text="{Tabledata>co2EmissioninMG}" />

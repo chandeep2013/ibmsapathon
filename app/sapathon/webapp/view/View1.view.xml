@@ -90,7 +90,7 @@
                     <l:BlockLayoutRow accentCells="Accent2">
                         <l:BlockLayoutCell id="Accent2" width="2">
                             <viz:Popover id="idPopOver3" />
-                            <viz:VizFrame id="idVizFrame3" uiConfig="{applicationSet:'fiori'}" vizType="bar" vizProperties="{title:{text:'CO2 emission of top 10 multiple times executed programs'}}" class="vizClass">
+                            <viz:VizFrame id="idVizFrame3" uiConfig="{applicationSet:'fiori'}" vizType="bar" vizProperties="{title:{text:'CO2 emission of top 10 executed programs'}}" class="vizClass">
                                 <viz:dataset>
                                     <viz.data:FlattenedDataset data="{Chart2Data>/}">
                                         <viz.data:dimensions>

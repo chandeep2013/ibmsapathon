@@ -3,15 +3,17 @@ sap.ui.define([
     "sap/ui/model/json/JSONModel",
     "sap/viz/ui5/controls/Popover",
     'sap/ui/core/util/Export',
-    'sap/ui/core/util/ExportTypeCSV'
+    'sap/ui/core/util/ExportTypeCSV',
+    "com/sap/sapathon/model/formatter"
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, JSONModel, Popover, Export, ExportTypeCSV) {
+    function (Controller, JSONModel, Popover, Export, ExportTypeCSV,formatter) {
         "use strict";
-
+        
         return Controller.extend("com.sap.sapathon.controller.View2", {
+            formatter: formatter,
             onInit: function (oEvent) {
                 this.oOwnerComponent = this.getOwnerComponent();
                 this.oRouter = this.oOwnerComponent.getRouter();
@@ -28,6 +30,7 @@ sap.ui.define([
                 if (val && val.length === 3) {
                     var Month = val, usage = "", programName = "", energyConsumption = "", programRunPerMonth = "", CO2EMission = "", TotalCPUtimeinseconds = "";
                     this.getView().byId("idExecutionMonth").setSelectedKeys([val]);
+                    replaceMonthText = "( executionMonth eq '"+Month+"' )";
                 }
                 else {
                     Month = this.getView().byId("idExecutionMonth").getSelectedKeys();
@@ -66,7 +69,7 @@ sap.ui.define([
                 }
 
                 if (Top10 == "true") {
-                    var spath = "https://port4004-workspaces-ws-mgqj6.us10.trial.applicationstudio.cloud.sap/v2/catalog/SampleData?$format=json&$filter={1} '" + progamFilter + "' and usage eq 'PROD'&$orderby=noOfTimesThePgmRunForTheMonth desc&$top=10"
+                    var spath = "https://port4004-workspaces-ws-mgqj6.us10.trial.applicationstudio.cloud.sap/v2/catalog/SampleData?$format=json&$filter={1} and usage eq 'PROD'&$orderby=noOfTimesThePgmRunForTheMonth desc&$top=10"
                 }
                 else {
                     spath = "https://port4004-workspaces-ws-mgqj6.us10.trial.applicationstudio.cloud.sap/v2/catalog/SampleData?$format=json&$filter={1} " + progamFilter + programRunPerMonthFilter + CO2EMissionFilter + TotalCPUtimeinsecondsFilter +" and usage eq 'PROD'";
