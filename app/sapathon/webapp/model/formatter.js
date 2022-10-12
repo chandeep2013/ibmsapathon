@@ -10,6 +10,11 @@ sap.ui.define([], function () {
                     return MonthName;
                 }
             }
+        },
+        CO2Emission:function(val){
+            if(val !== ""){
+                return Math.round(val);
+            }
         }
 
     };

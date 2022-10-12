@@ -92,7 +92,7 @@ resources:
       service: hana
       service-plan: hdi-shared
     properties:
-      hdi-service-name: ${service-name}
+      hdi-service-name: hdi-cc2gc
   - name: app-repo-host
     type: org.cloudfoundry.managed-service
     parameters:

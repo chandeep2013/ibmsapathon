@@ -89,3 +89,7 @@
 .sapMLabel .sapMLabelColonAndRequired {
     float: right !important;
 }
+
+.sapUiSizeCompact .sapMTB {
+    height: 2.7rem !important;
+}

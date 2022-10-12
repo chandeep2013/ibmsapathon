@@ -4,14 +4,15 @@
     xmlns:mvc="sap.ui.core.mvc"
     displayBlock="true"
     xmlns="sap.m"
+    xmlns:ui="sap.ui.table"
     xmlns:l="sap.ui.layout"
     xmlns:form="sap.ui.layout.form"
     xmlns:viz="sap.viz.ui5.controls"
     xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
     xmlns:viz.data="sap.viz.ui5.data"
 >
-    <Page id="page" >
-        <customHeader >
+    <Page id="page">
+        <customHeader>
             <Bar>
                 <contentLeft>
                     <Image src="model/IBM-Logo.png" width="100px" />
@@ -38,7 +39,7 @@
                             </VBox>
                         </TileContent>
                     </GenericTile>
-                    <Button icon="sap-icon://action" press="onNavTo" tooltip="Navigate to next screen"/>
+                    <Button icon="sap-icon://action" press="onNavTo" tooltip="Navigate to next screen" />
                 </contentRight>
             </Bar>
         </customHeader>
@@ -69,7 +70,7 @@
                         </l:BlockLayoutCell>
                         <l:BlockLayoutCell width="2">
                             <viz:Popover id="idPopOver4" />
-                            <viz:VizFrame id="idVizFrame4" uiConfig="{applicationSet:'fiori'}" vizType='donut' vizProperties="{title:{text:'Monthly energy consumption'}}" class="vizClass" >
+                            <viz:VizFrame id="idVizFrame4" uiConfig="{applicationSet:'fiori'}" vizType='donut' vizProperties="{title:{text:'Monthly energy consumption'}}" class="vizClass">
                                 <viz:dataset>
                                     <viz.data:FlattenedDataset data="{vizData>/}">
                                         <viz.data:dimensions>
@@ -109,27 +110,65 @@
                             </viz:VizFrame>
                         </l:BlockLayoutCell>
                         <l:BlockLayoutCell width="2">
-                            <viz:Popover id="idPopOver2" />
-                            <viz:VizFrame id="idVizFrame2" uiConfig="{applicationSet:'fiori'}" vizType="bubble" vizProperties="{title:{text:'CPU time > 100K Seconds'}}" class="vizClass">
+                            <viz:Popover id="idPopOver2" visible="false" />
+                            <viz:VizFrame id="idVizFrame2" visible="false" uiConfig="{applicationSet:'fiori'}" vizType="dual_combination" vizProperties="{title:{text:'CPU time > 100K Seconds'}}" class="vizClass">
                                 <viz:dataset>
                                     <viz.data:FlattenedDataset data="{vizData1>/}">
                                         <viz.data:dimensions>
                                             <viz.data:DimensionDefinition name="Month" value="{vizData1>Month}" />
                                         </viz.data:dimensions>
                                         <viz.data:measures>
-                                            <viz.data:MeasureDefinition name="Count of custom program" value="{vizData1>Count of custom program}" />
-                                            <viz.data:MeasureDefinition name="CO2 emission in g" value="{vizData1>CO2 emission in g}" />
-                                            <viz.data:MeasureDefinition name="Run count per month" value="{vizData1>Run count per month}" />
+                                            <viz.data:MeasureDefinition group="1" name="Count of custom program" value="{vizData1>Count of custom program}" />
+                                            <viz.data:MeasureDefinition group="2" name="Run count per month" value="{vizData1>Run count per month}" />
+                                            <viz.data:MeasureDefinition group="1" name="CO2 emission in g" value="{vizData1>CO2 emission in g}" />
                                         </viz.data:measures>
                                     </viz.data:FlattenedDataset>
                                 </viz:dataset>
                                 <viz:feeds>
-                                    <viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Count of custom program" />
-                                    <viz.feeds:FeedItem uid="valueAxis2" type="Measure" values="Run count per month" />
-                                    <viz.feeds:FeedItem uid="bubbleWidth" type="Measure" values="CO2 emission in g" />
-                                    <viz.feeds:FeedItem uid="color" type="Dimension" values="Month" />
+                                    <viz.feeds:FeedItem id="value1" uid="valueAxis" type="Measure" values="Count of custom program" />
+                                    <viz.feeds:FeedItem id="value2" uid="valueAxis" type="Measure" values="Run count per month" />
+                                    <viz.feeds:FeedItem id="value3" uid="valueAxis2" type="Measure" values="CO2 emission in g" />
+                                    <viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Month" />
                                 </viz:feeds>
                             </viz:VizFrame>
+
+                            <ui:Table id="idTable" rows="{vizData1>/}" selectionMode="Single" alternateRowColors="true" visibleRowCount="7" ariaLabelledBy="title" rowSelectionChange="onRowSelectionChange">
+                                <ui:extension>
+                                    <OverflowToolbar>
+                                        <content>
+                                            <ToolbarSpacer />
+                                            <Title text="CPU time > 100K Seconds" level="H2" />
+                                            <ToolbarSpacer />
+                                        </content>
+                                    </OverflowToolbar>
+                                </ui:extension>
+                                <ui:columns>
+                                    <ui:Column width="6rem" hAlign="Center">
+                                        <Label text="Month" />
+                                        <ui:template>
+                                            <Text text="{vizData1>Month}" wrapping="false" />
+                                        </ui:template>
+                                    </ui:Column>
+                                    <ui:Column hAlign="Center">
+                                        <Label text="Count of custom program" />
+                                        <ui:template>
+                                            <Text text="{vizData1>Count of custom program}" />
+                                        </ui:template>
+                                    </ui:Column>
+                                    <ui:Column hAlign="Center">
+                                        <Label text="Run count per month" />
+                                        <ui:template>
+                                            <Text text="{vizData1>Run count per month}" />
+                                        </ui:template>
+                                    </ui:Column>
+                                    <ui:Column hAlign="Center">
+                                        <Label text="CO2 emission in g" />
+                                        <ui:template>
+                                            <Text text="{parts: [ {path: 'vizData1>CO2 emission in g'}], formatter: '.formatter.CO2Emission' }" />
+                                        </ui:template>
+                                    </ui:Column>
+                                </ui:columns>
+                            </ui:Table>
                         </l:BlockLayoutCell>
                     </l:BlockLayoutRow>
                 </l:BlockLayout>

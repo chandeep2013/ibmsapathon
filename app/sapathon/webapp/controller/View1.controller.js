@@ -1,64 +1,99 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
-    "sap/viz/ui5/controls/Popover"
+    "sap/viz/ui5/controls/Popover",
+    "com/sap/sapathon/model/formatter",
+    "sap/m/MessageBox"
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, JSONModel, Popover) {
+    function (Controller, JSONModel, Popover, formatter,MessageBox) {
         "use strict";
 
         return Controller.extend("com.sap.sapathon.controller.View1", {
+            formatter: formatter,
             onInit: function () {
                 this.oOwnerComponent = this.getOwnerComponent();
                 this.oRouter = this.oOwnerComponent.getRouter();
                 this.oRouter.getRoute("View1").attachPatternMatched(this._onvizCharts, this);
                 var that = this;
-                var vizFrameArray = ["idVizFrame1","idVizFrame2","idVizFrame3","idVizFrame4"];
-                for(var i=0;i<vizFrameArray.length;i++){
+                var vizFrameArray = ["idVizFrame1", "idVizFrame2", "idVizFrame3", "idVizFrame4"];
+                for (var i = 0; i < vizFrameArray.length; i++) {
+
                     var frame = this.getView().byId(vizFrameArray[i]);
-                    frame.setVizProperties({
-                        plotArea: {
-                            colorPalette: ["#8189F7", "#E8743B", "#19A979", "#ED4A7B", "#8189F7", "#E8743B", "#19A979", "#ED4A7B"],
-                            dataLabel: {
-                                visible: true
+                    if (vizFrameArray[i] == "idVizFrame2") {
+                        frame.setVizProperties({
+                            plotArea: {
+                                secondaryScale: { fixedRange: true, minValue: 0, maxValue: 30000 },
+                                dataShape: {
+                                    primaryAxis: ['bar', 'bar', 'bar', 'bar', 'line', 'line', 'line'],
+                                    secondaryAxis: ['line', 'line', 'line']
+                                },
+                                //colorPalette: ["#1CA979", "#1CA979", "#1CA979", "#1CA979", "#1CA979", "#1CA979", "#1CA979", "#1CA979"],
+                                dataLabel: {
+                                    visible: true
+                                }
+                            }, valueAxis: {
+                                title: {
+                                    visible: false
+                                }
+                            },
+                            valueAxis2: {
+                                title: {
+                                    visible: false
+                                }
+                            },
+                            categoryAxis: {
+                                title: {
+                                    visible: false
+                                }
                             }
-                        },
-                        valueAxis: {
-                            title: {
-                                visible: false
+                        });
+                    } else {
+                        frame.setVizProperties({
+                            plotArea: {
+                                //colorPalette: ["#8189F7", "#E8743B", "#19A979", "#ED4A7B", "#8189F7", "#E8743B", "#19A979", "#ED4A7B"],
+                                dataLabel: {
+                                    visible: true
+                                }
+                            },
+                            valueAxis: {
+                                title: {
+                                    visible: false
+                                }
+                            },
+                            valueAxis2: {
+                                title: {
+                                    visible: false
+                                }
+                            },
+                            categoryAxis: {
+                                title: {
+                                    visible: false
+                                }
                             }
-                        },
-                        valueAxis2: {
-                            title: {
-                                visible: false
-                            }
-                        },
-                        categoryAxis: {
-                            title: {
-                                visible: false
-                            }
-                        }
-                    });
-                    if(vizFrameArray[i] === "idVizFrame1"){
+                        });
+                    }
+
+                    if (vizFrameArray[i] === "idVizFrame1") {
                         var oPopOver = this.getView().byId("idPopOver1");
                         oPopOver.connect(frame.getVizUid());
                     }
-                    else if(vizFrameArray[i] === "idVizFrame2"){
+                    else if (vizFrameArray[i] === "idVizFrame2") {
                         var oPopOver = this.getView().byId("idPopOver2");
                         oPopOver.connect(frame.getVizUid());
                     }
-                    else if(vizFrameArray[i] === "idVizFrame3"){
+                    else if (vizFrameArray[i] === "idVizFrame3") {
                         var oPopOver = this.getView().byId("idPopOver3");
                         oPopOver.connect(frame.getVizUid());
                         frame.setVizProperties({
-                            legend : {
+                            legend: {
                                 visible: false
-                                }
+                            }
                         });
                     }
-                    else if(vizFrameArray[i] === "idVizFrame4"){
+                    else if (vizFrameArray[i] === "idVizFrame4") {
                         var oPopOver = this.getView().byId("idPopOver4");
                         oPopOver.connect(frame.getVizUid());
                     }
@@ -72,15 +107,23 @@ sap.ui.define([
                             var oRouter = sap.ui.core.UIComponent.getRouterFor(that);
                             oRouter.navTo("View2", {
                                 month: monthParam,
-                                top10 :chart2Param
+                                top10: chart2Param
                             });
                         }
                     }]);
                 }
             },
-            onNavTo:function(){
+            onNavTo: function () {
                 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
                 oRouter.navTo("View2");
+            },
+            onRowSelectionChange: function (evt) {
+                var oData = this.getView().getModel("vizData1").getProperty("/" + evt.getSource().getSelectedIndex());
+                var monthParam = oData.Month.length > 3 ? oData.Month.split("-")[1].trim() : oData.Month;
+                var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+                oRouter.navTo("View2", {
+                    month: monthParam
+                });
             },
             _onvizCharts: function () {
                 var that = this;
@@ -88,13 +131,14 @@ sap.ui.define([
                 $.ajax({
                     method: "GET",
                     contentType: "application/json",
-                    url: "https://port4004-workspaces-ws-mgqj6.us10.trial.applicationstudio.cloud.sap/v2/catalog/SampleData",
+                    url: "/v2/catalog/SampleData",
                     async: true,
                     success: function (result) {
                         that.arrangeData(result.d.results);
                     },
                     error: function (errorThrown) {
-                        console.log(errorThrown);
+                        sap.ui.core.BusyIndicator.hide();
+                        MessageBox.error("Error on getting data!");
                     }
                 });
             },
@@ -109,7 +153,7 @@ sap.ui.define([
                 var totalCo2Emission = 0, totalEnergyConsumption = 0;
                 for (var i = 0; i < ResponseData.length; i++) {
                     totalCo2Emission += parseFloat(ResponseData[i].co2EmissioninMG);
-                    if(ResponseData[i].currentRunningTimeinCPUSeconds !="" && ResponseData[i].currentRunningTimeinCPUSeconds!== null){
+                    if (ResponseData[i].currentRunningTimeinCPUSeconds != "" && ResponseData[i].currentRunningTimeinCPUSeconds !== null) {
                         totalEnergyConsumption += parseInt(ResponseData[i].currentRunningTimeinCPUSeconds);
                     }
                     if (parseInt(ResponseData[i].currentRunningTimeinCPUSeconds) > 100000) {
@@ -125,7 +169,7 @@ sap.ui.define([
                         RunningTimeinCPUSeconds += parseInt(ResponseData[i].currentRunningTimeinCPUSeconds);
                     }
                     else {
-                        if(ResponseData[i].executionMonth !== null){
+                        if (ResponseData[i].executionMonth !== null) {
                             ViZData.push({
                                 "Month": ResponseData[i].executionMonth,
                                 "Count of custom program": pgmName,
@@ -136,8 +180,8 @@ sap.ui.define([
                         }
                     }
                 }
-                var TotalCO2 = Math.round(totalCo2Emission)+ " grams";
-                var TotalEnergy = " "+ Math.round(totalEnergyConsumption/1000)+ " Wh";
+                var TotalCO2 = Math.round(totalCo2Emission) + " grams";
+                var TotalEnergy = " " + Math.round(totalEnergyConsumption / 1000) + " Wh";
                 this.getView().byId("idTotalCO2").setText(TotalCO2);
                 this.getView().byId("idTotalEnergy").setText(TotalEnergy);
                 that.CPUData(CPUData);

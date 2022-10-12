@@ -4,12 +4,13 @@ sap.ui.define([
     "sap/viz/ui5/controls/Popover",
     'sap/ui/core/util/Export',
     'sap/ui/core/util/ExportTypeCSV',
-    "com/sap/sapathon/model/formatter"
+    "com/sap/sapathon/model/formatter",
+    "sap/m/MessageBox"
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, JSONModel, Popover, Export, ExportTypeCSV,formatter) {
+    function (Controller, JSONModel, Popover, Export, ExportTypeCSV,formatter,MessageBox) {
         "use strict";
         
         return Controller.extend("com.sap.sapathon.controller.View2", {
@@ -68,11 +69,11 @@ sap.ui.define([
                     }
                 }
 
-                if (Top10 == "true") {
-                    var spath = "https://port4004-workspaces-ws-mgqj6.us10.trial.applicationstudio.cloud.sap/v2/catalog/SampleData?$format=json&$filter={1} and usage eq 'PROD'&$orderby=noOfTimesThePgmRunForTheMonth desc&$top=10"
+                if (Top10 == "true") {https://port4004-workspaces-ws-69bpc.eu10.applicationstudio.cloud.sap/v2/catalog/SampleData
+                    var spath = "/v2/catalog/SampleData?$format=json&$filter={1} and usage eq 'PROD'&$orderby=noOfTimesThePgmRunForTheMonth desc&$top=10"
                 }
                 else {
-                    spath = "https://port4004-workspaces-ws-mgqj6.us10.trial.applicationstudio.cloud.sap/v2/catalog/SampleData?$format=json&$filter={1} " + progamFilter + programRunPerMonthFilter + CO2EMissionFilter + TotalCPUtimeinsecondsFilter +" and usage eq 'PROD'";
+                    spath = "/v2/catalog/SampleData?$format=json&$filter={1} " + progamFilter + programRunPerMonthFilter + CO2EMissionFilter + TotalCPUtimeinsecondsFilter +" and usage eq 'PROD'";
                 }
                 spath = spath.replace("{1}", replaceMonthText);
                 sap.ui.core.BusyIndicator.show(-1);
@@ -90,7 +91,7 @@ sap.ui.define([
                         that.getView().setModel(oModel, "Tabledata");
                     },
                     error: function (errorThrown) {
-                        console.log(errorThrown);
+                        MessageBox.error("Error on getting data!");
                         sap.ui.core.BusyIndicator.hide();
                     }
                 });

@@ -9,30 +9,25 @@
   },
   "dependencies": {
     "@sap/audit-logging": "^5",
-    "@sap/cds": "^6.1",
     "@sap/cds-odata-v2-adapter-proxy": "^1",
+    "@sap/cds": "^6.1",
+    "@sap/xsenv": "^3.3.2",
     "@sap/xssec": "^3",
+    "@ui5/cli": "^2.14.11",
     "debug": "^4.3",
     "express": "^4",
     "hdb": "^0.19",
     "passport": "^0.4.1"
   },
   "devDependencies": {
-    "@sap/cds-odata-v2-adapter-proxy": "^1",
-    "@sap/ux-specification": "^1.102.6",
-    "sqlite3": "^5.0.2",
-    "rimraf": "^3.0.2"
+    "sqlite3": "^5.0.2"
   },
   "sapux": [
     "app/resources/fiori",
     "app/sapathon"
   ],
   "scripts": {
-    "start": "cds run",
-    "watch-sapathon": "cds watch --open sapathon/webapp/index.html?sap-ui-xx-viewCache=false",
-    "undeploy": "cf undeploy app --delete-services --delete-service-keys --delete-service-brokers",
-    "build": "rimraf resources mta_archives && mbt build --mtar archive",
-    "deploy": "cf deploy mta_archives/archive.mtar --retries 1"
+    "start": "cds run"
   },
   "eslintConfig": {
     "extends": "eslint:recommended",
@@ -62,24 +57,17 @@
   "cds": {
     "requires": {
       "auth": {
-        "restrict_all_services": false
+        "kind": "xsuaa"
       },
       "db": {
-        "[production]": {
-          "kind": "hana-cloud"
-        },
-        "[development]": {
-          "kind": "sql"
-        },
-        "model": [
-          "db",
-          "srv"
-        ],
-        "kind": "hana-cloud"
+        "kind": "sql"
+      },
+      "uaa": {
+        "kind": "xsuaa"
       }
     },
     "hana": {
-        "deploy-format": "hdbtable"
+      "deploy-format": "hdbtable"
     }
   }
 }
