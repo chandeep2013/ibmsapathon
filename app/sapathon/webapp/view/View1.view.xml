@@ -49,7 +49,7 @@
                     <l:BlockLayoutRow accentCells="Accent1">
                         <l:BlockLayoutCell id="Accent1" width="2">
                             <viz:Popover id="idPopOver1" />
-                            <viz:VizFrame id="idVizFrame1" uiConfig="{applicationSet:'fiori'}" vizType="column" vizProperties="{title:{text:'Monthly CO2 emission'}}" class="vizClass">
+                            <viz:VizFrame id="idVizFrame1" uiConfig="{applicationSet:'fiori'}" vizType="column" vizProperties="{title:{text:'CO2 emission'}}" class="vizClass">
                                 <viz:dataset>
                                     <viz.data:FlattenedDataset data="{vizData>/}">
                                         <viz.data:dimensions>
@@ -70,7 +70,7 @@
                         </l:BlockLayoutCell>
                         <l:BlockLayoutCell width="2">
                             <viz:Popover id="idPopOver4" />
-                            <viz:VizFrame id="idVizFrame4" uiConfig="{applicationSet:'fiori'}" vizType='donut' vizProperties="{title:{text:'Monthly energy consumption'}}" class="vizClass">
+                            <viz:VizFrame id="idVizFrame4" uiConfig="{applicationSet:'fiori'}" vizType='donut' vizProperties="{title:{text:'Energy consumption'}}" class="vizClass">
                                 <viz:dataset>
                                     <viz.data:FlattenedDataset data="{vizData>/}">
                                         <viz.data:dimensions>
@@ -91,7 +91,7 @@
                     <l:BlockLayoutRow accentCells="Accent2">
                         <l:BlockLayoutCell id="Accent2" width="2">
                             <viz:Popover id="idPopOver3" />
-                            <viz:VizFrame id="idVizFrame3" uiConfig="{applicationSet:'fiori'}" vizType="bar" vizProperties="{title:{text:'CO2 emission of top 10 executed programs'}}" class="vizClass">
+                            <viz:VizFrame id="idVizFrame3" uiConfig="{applicationSet:'fiori'}" vizType="bar" vizProperties="{title:{text:'Top 10 executed programs'}}" class="vizClass">
                                 <viz:dataset>
                                     <viz.data:FlattenedDataset data="{Chart2Data>/}">
                                         <viz.data:dimensions>
@@ -137,22 +137,28 @@
                                     <OverflowToolbar>
                                         <content>
                                             <ToolbarSpacer />
-                                            <Title text="CPU time > 100K Seconds" level="H2" />
+                                            <Title text="Carbon footprint of the system" level="H2" />
                                             <ToolbarSpacer />
                                         </content>
                                     </OverflowToolbar>
                                 </ui:extension>
                                 <ui:columns>
-                                    <ui:Column width="6rem" hAlign="Center">
+                                    <ui:Column width="5rem" hAlign="Center">
                                         <Label text="Month" />
                                         <ui:template>
                                             <Text text="{vizData1>Month}" wrapping="false" />
                                         </ui:template>
                                     </ui:Column>
-                                    <ui:Column hAlign="Center">
-                                        <Label text="Count of custom program" />
+                                    <ui:Column width="5rem" hAlign="Center">
+                                        <Label text="Range" />
                                         <ui:template>
-                                            <Text text="{vizData1>Count of custom program}" />
+                                            <ObjectNumber number="{vizData1>Param}" state="{parts: [{path: 'vizData1>Param'}],formatter: '.formatter.State'}" />
+                                        </ui:template>
+                                    </ui:Column>
+                                    <ui:Column hAlign="Center">
+                                        <Label text="CPU time in seconds" />
+                                        <ui:template>
+                                            <Text text="{vizData1>currentRunningTimeinCPUSeconds}" />
                                         </ui:template>
                                     </ui:Column>
                                     <ui:Column hAlign="Center">

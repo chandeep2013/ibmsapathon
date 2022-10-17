@@ -15,6 +15,20 @@ sap.ui.define([], function () {
             if(val !== ""){
                 return Math.round(val);
             }
+        },
+        State:function(val){
+            if(val ==">1"){
+                return "Success";
+            }
+            else if(val =="1-2"){
+                return "Information";
+            }
+            else if(val =="2-3"){
+                return "Warning";
+            }
+            else{
+                return "Error";
+            }
         }
 
     };

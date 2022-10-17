@@ -147,8 +147,9 @@ sap.ui.define([
                 var oModel = new JSONModel();
                 oModel.setSizeLimit(100000);
                 var ViZData = [];
-                var CPUData = [];
+                //var CPUData = [];
                 this.Chart2Data(ResponseData);
+                this.CPUData(ResponseData);
                 var pgmName = 0, ResponseDataPgmName = 0, ProgramRunPerMonth = 0, Co2EmissioninGrams = 0, RunningTimeinCPUSeconds = 0;
                 var totalCo2Emission = 0, totalEnergyConsumption = 0;
                 for (var i = 0; i < ResponseData.length; i++) {
@@ -156,9 +157,9 @@ sap.ui.define([
                     if (ResponseData[i].currentRunningTimeinCPUSeconds != "" && ResponseData[i].currentRunningTimeinCPUSeconds !== null) {
                         totalEnergyConsumption += parseInt(ResponseData[i].currentRunningTimeinCPUSeconds);
                     }
-                    if (parseInt(ResponseData[i].currentRunningTimeinCPUSeconds) > 100000) {
-                        CPUData.push(ResponseData[i]);
-                    }
+                    //if (parseInt(ResponseData[i].currentRunningTimeinCPUSeconds) > 100000) {
+                    //    CPUData.push(ResponseData[i]);
+                    //}
                     if (ResponseData[i + 1] && ResponseData[i].executionMonth === ResponseData[i + 1].executionMonth) {
                         if (ResponseData[i].programName != "") {
                             ResponseDataPgmName = 1;
@@ -184,13 +185,13 @@ sap.ui.define([
                 var TotalEnergy = " " + Math.round(totalEnergyConsumption / 1000) + " Wh";
                 this.getView().byId("idTotalCO2").setText(TotalCO2);
                 this.getView().byId("idTotalEnergy").setText(TotalEnergy);
-                that.CPUData(CPUData);
+                //that.CPUData(CPUData);
                 sap.ui.core.BusyIndicator.hide();
                 oModel.setData(ViZData);
                 this.getView().setModel(oModel, "vizData");
             },
             CPUData: function (ResponseData) {
-                var pgmName1 = 0, ResponseDataPgmName1 = 0, ProgramRunPerMonth1 = 0, Co2EmissioninGrams1 = 0;
+                /*var pgmName1 = 0, ResponseDataPgmName1 = 0, ProgramRunPerMonth1 = 0, Co2EmissioninGrams1 = 0;
                 var oModel1 = new JSONModel();
                 oModel1.setSizeLimit(100000);
                 var ViZData1 = [];
@@ -216,6 +217,112 @@ sap.ui.define([
                         pgmName1 = 0;
                         ProgramRunPerMonth1 = 0;
                         Co2EmissioninGrams1 = 0;
+                    }
+                }
+                oModel1.setData(ViZData1);
+                this.getView().setModel(oModel1, "vizData1");*/
+                var pgmName1 = 0, ResponseDataPgmName1 = 0, ProgramRunPerMonth1 = 0, Co2EmissioninGrams1 = 0, currentRunningTimeinCPUSeconds1=0;
+                var lessthanOne = [], GreaterthanOne = [], greaterthanTwo = [], greaterthanThree = [];
+                var oModel1 = new JSONModel();
+                oModel1.setSizeLimit(100000);
+                var ViZData1 = [];
+                for (var j = 0; j < ResponseData.length; j++) {
+                    if (ResponseData[j + 1] && ResponseData[j].executionMonth === ResponseData[j + 1].executionMonth) {
+                        if (ResponseData[j].programName != "") {
+                            ResponseDataPgmName1 = 1;
+                        }
+                        if (parseFloat(ResponseData[j].co2EmissioninMG) < 1) {
+                            lessthanOne.push(ResponseData[j]);
+                        }
+                        else if (parseFloat(ResponseData[j].co2EmissioninMG) > 1 && parseFloat(ResponseData[j].co2EmissioninMG) < 2) {
+                            GreaterthanOne.push(ResponseData[j]);
+                        }
+                        else if (parseFloat(ResponseData[j].co2EmissioninMG) > 2 && parseFloat(ResponseData[j].co2EmissioninMG) < 3) {
+                            greaterthanTwo.push(ResponseData[j]);
+                        }
+                        else {
+                            greaterthanThree.push(ResponseData[j]);
+                        }
+
+                        //pgmName1 += ResponseDataPgmName1;
+                        //ProgramRunPerMonth1 += parseInt(ResponseData[j].noOfTimesThePgmRunForTheMonth);
+                        //Co2EmissioninGrams1 += parseFloat(ResponseData[j].co2EmissioninMG);
+                    }
+                    else {
+                        //pgmName1 += ResponseDataPgmName1;
+                        //ProgramRunPerMonth1 += parseInt(ResponseData[j].noOfTimesThePgmRunForTheMonth);
+                        //Co2EmissioninGrams1 += parseFloat(ResponseData[j].co2EmissioninMG);
+                        if(ResponseData[j].executionMonth !== null){
+                            for (var a = 0; a < lessthanOne.length; a++) {
+                                pgmName1 += ResponseDataPgmName1;
+                                ProgramRunPerMonth1 += parseInt(lessthanOne[a].noOfTimesThePgmRunForTheMonth);
+                                Co2EmissioninGrams1 += parseFloat(lessthanOne[a].co2EmissioninMG);
+                                currentRunningTimeinCPUSeconds1 += parseInt(lessthanOne[a].currentRunningTimeinCPUSeconds);
+                            }
+                            ViZData1.push({
+                                "Month": ResponseData[j].executionMonth,
+                                "Param": ">1",
+                                "Run count per month": ProgramRunPerMonth1,
+                                "CO2 emission in g": Co2EmissioninGrams1,
+                                "currentRunningTimeinCPUSeconds":currentRunningTimeinCPUSeconds1
+                            });
+                            pgmName1 = 0;
+                            ProgramRunPerMonth1 = 0;
+                            Co2EmissioninGrams1 = 0;
+                            currentRunningTimeinCPUSeconds1 = 0;
+                            for (var a = 0; a < GreaterthanOne.length; a++) {
+                                pgmName1 += ResponseDataPgmName1;
+                                ProgramRunPerMonth1 += parseInt(GreaterthanOne[a].noOfTimesThePgmRunForTheMonth);
+                                Co2EmissioninGrams1 += parseFloat(GreaterthanOne[a].co2EmissioninMG);
+                                currentRunningTimeinCPUSeconds1 += parseInt(GreaterthanOne[a].currentRunningTimeinCPUSeconds);
+                            }
+                            ViZData1.push({
+                                "Month": ResponseData[j].executionMonth,
+                                "Param": "1-2",
+                                "Run count per month": ProgramRunPerMonth1,
+                                "CO2 emission in g": Co2EmissioninGrams1,
+                                "currentRunningTimeinCPUSeconds":currentRunningTimeinCPUSeconds1
+                            });
+                            pgmName1 = 0;
+                            ProgramRunPerMonth1 = 0;
+                            Co2EmissioninGrams1 = 0;
+                            currentRunningTimeinCPUSeconds1 = 0;
+                            for (var a = 0; a < greaterthanTwo.length; a++) {
+                                pgmName1 += ResponseDataPgmName1;
+                                ProgramRunPerMonth1 += parseInt(greaterthanTwo[a].noOfTimesThePgmRunForTheMonth);
+                                Co2EmissioninGrams1 += parseFloat(greaterthanTwo[a].co2EmissioninMG);
+                                currentRunningTimeinCPUSeconds1 += parseInt(greaterthanTwo[a].currentRunningTimeinCPUSeconds);
+                            }
+                            ViZData1.push({
+                                "Month": ResponseData[j].executionMonth,
+                                "Param": "2-3",
+                                "Run count per month": ProgramRunPerMonth1,
+                                "CO2 emission in g": Co2EmissioninGrams1,
+                                "currentRunningTimeinCPUSeconds":currentRunningTimeinCPUSeconds1
+                            });
+                            pgmName1 = 0;
+                            ProgramRunPerMonth1 = 0;
+                            Co2EmissioninGrams1 = 0;
+                            currentRunningTimeinCPUSeconds1 = 0;
+                            for (var a = 0; a < greaterthanThree.length; a++) {
+                                pgmName1 += ResponseDataPgmName1;
+                                ProgramRunPerMonth1 += parseInt(greaterthanThree[a].noOfTimesThePgmRunForTheMonth);
+                                Co2EmissioninGrams1 += parseFloat(greaterthanThree[a].co2EmissioninMG);
+                                currentRunningTimeinCPUSeconds1 += parseInt(greaterthanThree[a].currentRunningTimeinCPUSeconds);
+                            }
+                            ViZData1.push({
+                                "Month": ResponseData[j].executionMonth,
+                                "Param": ">3",
+                                "Run count per month": ProgramRunPerMonth1,
+                                "CO2 emission in g": Co2EmissioninGrams1,
+                                "currentRunningTimeinCPUSeconds":currentRunningTimeinCPUSeconds1
+                            });
+                            pgmName1 = 0;
+                            ProgramRunPerMonth1 = 0;
+                            Co2EmissioninGrams1 = 0;
+                            currentRunningTimeinCPUSeconds1 = 0;
+                        }
+                        
                     }
                 }
                 oModel1.setData(ViZData1);
@@ -260,11 +367,11 @@ sap.ui.define([
                                 "Value": ProgramRunPerMonth,
                                 "Month": ResponseData[i].executionMonth
                             });
-                            Chart2Data.push({
+                            /*Chart2Data.push({
                                 "Paramater": "Program Name",
                                 "Value": pgmName,
                                 "Month": ResponseData[i].executionMonth
-                            });
+                            });*/
                             monthArray = [];
                             pgmName = 0;
                             ResponseDataPgmName = 0;

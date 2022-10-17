@@ -67,9 +67,9 @@
                         </OverflowToolbar>
                     </headerToolbar>
                     <columns>
-                        <Column width="8rem">
+                        <!--Column width="8rem">
                             <Text text="Carbon footprint" />
-                        </Column>
+                        </Column-->
                         <Column demandPopin="true" width="6rem">
                             <Text text="Usage" />
                         </Column>
@@ -95,7 +95,7 @@
                     <items>
                         <ColumnListItem vAlign="Middle">
                             <cells>
-                                <Text text="Yes/No" />
+                                <!--Text text="Yes/No" /-->
                                 <Text text="{Tabledata>usage}" />
                                 <Text text="{Tabledata>programName}" />
                                 <Text text="{Tabledata>noOfTimesThePgmRunForTheMonth}" />
