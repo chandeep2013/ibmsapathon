@@ -8,7 +8,7 @@ sap.ui.define([
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, JSONModel, Popover, formatter,MessageBox) {
+    function (Controller, JSONModel, Popover, formatter, MessageBox) {
         "use strict";
 
         return Controller.extend("com.sap.sapathon.controller.View1", {
@@ -122,7 +122,8 @@ sap.ui.define([
                 var monthParam = oData.Month.length > 3 ? oData.Month.split("-")[1].trim() : oData.Month;
                 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
                 oRouter.navTo("View2", {
-                    month: monthParam
+                    month: monthParam,
+                    range: oData.Param
                 });
             },
             _onvizCharts: function () {
@@ -191,6 +192,7 @@ sap.ui.define([
                 this.getView().setModel(oModel, "vizData");
             },
             CPUData: function (ResponseData) {
+                var that = this;
                 /*var pgmName1 = 0, ResponseDataPgmName1 = 0, ProgramRunPerMonth1 = 0, Co2EmissioninGrams1 = 0;
                 var oModel1 = new JSONModel();
                 oModel1.setSizeLimit(100000);
@@ -221,7 +223,7 @@ sap.ui.define([
                 }
                 oModel1.setData(ViZData1);
                 this.getView().setModel(oModel1, "vizData1");*/
-                var pgmName1 = 0, ResponseDataPgmName1 = 0, ProgramRunPerMonth1 = 0, Co2EmissioninGrams1 = 0, currentRunningTimeinCPUSeconds1=0;
+                var pgmName1 = 0, ResponseDataPgmName1 = 0, ProgramRunPerMonth1 = 0, Co2EmissioninGrams1 = 0, currentRunningTimeinCPUSeconds1 = 0;
                 var lessthanOne = [], GreaterthanOne = [], greaterthanTwo = [], greaterthanThree = [];
                 var oModel1 = new JSONModel();
                 oModel1.setSizeLimit(100000);
@@ -240,7 +242,7 @@ sap.ui.define([
                         else if (parseFloat(ResponseData[j].co2EmissioninMG) > 2 && parseFloat(ResponseData[j].co2EmissioninMG) < 3) {
                             greaterthanTwo.push(ResponseData[j]);
                         }
-                        else {
+                        else if (parseFloat(ResponseData[j].co2EmissioninMG) > 3) {
                             greaterthanThree.push(ResponseData[j]);
                         }
 
@@ -252,7 +254,7 @@ sap.ui.define([
                         //pgmName1 += ResponseDataPgmName1;
                         //ProgramRunPerMonth1 += parseInt(ResponseData[j].noOfTimesThePgmRunForTheMonth);
                         //Co2EmissioninGrams1 += parseFloat(ResponseData[j].co2EmissioninMG);
-                        if(ResponseData[j].executionMonth !== null){
+                        if (ResponseData[j].executionMonth !== null) {
                             for (var a = 0; a < lessthanOne.length; a++) {
                                 pgmName1 += ResponseDataPgmName1;
                                 ProgramRunPerMonth1 += parseInt(lessthanOne[a].noOfTimesThePgmRunForTheMonth);
@@ -261,10 +263,12 @@ sap.ui.define([
                             }
                             ViZData1.push({
                                 "Month": ResponseData[j].executionMonth,
-                                "Param": ">1",
+                                "Param": "<1",
+                                "Count of custom program": lessthanOne.length,
                                 "Run count per month": ProgramRunPerMonth1,
                                 "CO2 emission in g": Co2EmissioninGrams1,
-                                "currentRunningTimeinCPUSeconds":currentRunningTimeinCPUSeconds1
+                                "currentRunningTimeinCPUSeconds": currentRunningTimeinCPUSeconds1,
+                                "Average": Co2EmissioninGrams1 / lessthanOne.length
                             });
                             pgmName1 = 0;
                             ProgramRunPerMonth1 = 0;
@@ -279,9 +283,11 @@ sap.ui.define([
                             ViZData1.push({
                                 "Month": ResponseData[j].executionMonth,
                                 "Param": "1-2",
+                                "Count of custom program": GreaterthanOne.length,
                                 "Run count per month": ProgramRunPerMonth1,
                                 "CO2 emission in g": Co2EmissioninGrams1,
-                                "currentRunningTimeinCPUSeconds":currentRunningTimeinCPUSeconds1
+                                "currentRunningTimeinCPUSeconds": currentRunningTimeinCPUSeconds1,
+                                "Average": Co2EmissioninGrams1 / GreaterthanOne.length
                             });
                             pgmName1 = 0;
                             ProgramRunPerMonth1 = 0;
@@ -296,9 +302,11 @@ sap.ui.define([
                             ViZData1.push({
                                 "Month": ResponseData[j].executionMonth,
                                 "Param": "2-3",
+                                "Count of custom program": greaterthanTwo.length,
                                 "Run count per month": ProgramRunPerMonth1,
                                 "CO2 emission in g": Co2EmissioninGrams1,
-                                "currentRunningTimeinCPUSeconds":currentRunningTimeinCPUSeconds1
+                                "currentRunningTimeinCPUSeconds": currentRunningTimeinCPUSeconds1,
+                                "Average": Co2EmissioninGrams1 / greaterthanTwo.length
                             });
                             pgmName1 = 0;
                             ProgramRunPerMonth1 = 0;
@@ -313,20 +321,44 @@ sap.ui.define([
                             ViZData1.push({
                                 "Month": ResponseData[j].executionMonth,
                                 "Param": ">3",
+                                "Count of custom program": greaterthanThree.length,
                                 "Run count per month": ProgramRunPerMonth1,
                                 "CO2 emission in g": Co2EmissioninGrams1,
-                                "currentRunningTimeinCPUSeconds":currentRunningTimeinCPUSeconds1
+                                "currentRunningTimeinCPUSeconds": currentRunningTimeinCPUSeconds1,
+                                "Average": Co2EmissioninGrams1 / greaterthanThree.length
                             });
                             pgmName1 = 0;
                             ProgramRunPerMonth1 = 0;
                             Co2EmissioninGrams1 = 0;
                             currentRunningTimeinCPUSeconds1 = 0;
                         }
-                        
+
                     }
                 }
                 oModel1.setData(ViZData1);
                 this.getView().setModel(oModel1, "vizData1");
+                setTimeout(function () {
+                    var rows = that.getView().byId("idTable").mAggregations.rows;
+                    for (var i = 0; i < rows.length; i++) {
+                        if (rows[i].mAggregations.cells[1].mProperties.text == "<1") {
+                            document.getElementById("container-com.sap.sapathon---View1--idTable-rows-row" + i + "-col1").style.backgroundColor = "#99EE99";
+                            //document.getElementById("__number0-__clone1").style.color = "White";
+                        }
+                        else if (rows[i].mAggregations.cells[1].mProperties.text == "1-2") {
+                            document.getElementById("container-com.sap.sapathon---View1--idTable-rows-row" + i + "-col1").style.backgroundColor = "#FFFCD1";
+                            //document.getElementById("__number0-__clone1").style.color = "White";
+                        }
+                        else if (rows[i].mAggregations.cells[1].mProperties.text == "2-3") {
+                            document.getElementById("container-com.sap.sapathon---View1--idTable-rows-row" + i + "-col1").style.backgroundColor = "#FFBF00";
+                            //document.getElementById("__number0-__clone1").style.color = "White";
+                        }
+                        else if (rows[i].mAggregations.cells[1].mProperties.text == ">3") {
+                            document.getElementById("container-com.sap.sapathon---View1--idTable-rows-row" + i + "-col1").style.backgroundColor = "Red";
+                            //document.getElementById("__number0-__clone1").style.color = "White";
+                        }
+                    }
+                }, 1000);
+
             },
             Chart2Data: function (ResponseData) {
                 var oChart2Model = new JSONModel();

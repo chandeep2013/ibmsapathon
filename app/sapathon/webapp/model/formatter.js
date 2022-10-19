@@ -11,13 +11,13 @@ sap.ui.define([], function () {
                 }
             }
         },
-        CO2Emission:function(val){
+        FloatWith2Decimals:function(val){
             if(val !== ""){
-                return Math.round(val);
+                return Number.parseFloat(val).toFixed(2);
             }
         },
         State:function(val){
-            if(val ==">1"){
+            if(val =="<1"){
                 return "Success";
             }
             else if(val =="1-2"){
@@ -28,6 +28,14 @@ sap.ui.define([], function () {
             }
             else{
                 return "Error";
+            }
+        },
+        Visible:function(val){
+            if(val == "<1"){
+                return true;
+            }
+            else{
+                return false;
             }
         }
 

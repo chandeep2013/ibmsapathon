@@ -49,7 +49,7 @@
                     <l:BlockLayoutRow accentCells="Accent1">
                         <l:BlockLayoutCell id="Accent1" width="2">
                             <viz:Popover id="idPopOver1" />
-                            <viz:VizFrame id="idVizFrame1" uiConfig="{applicationSet:'fiori'}" vizType="column" vizProperties="{title:{text:'CO2 emission'}}" class="vizClass">
+                            <viz:VizFrame id="idVizFrame1" uiConfig="{applicationSet:'fiori'}" vizType="column" vizProperties="{title:{text:'CO2 emission'}}" >
                                 <viz:dataset>
                                     <viz.data:FlattenedDataset data="{vizData>/}">
                                         <viz.data:dimensions>
@@ -70,7 +70,7 @@
                         </l:BlockLayoutCell>
                         <l:BlockLayoutCell width="2">
                             <viz:Popover id="idPopOver4" />
-                            <viz:VizFrame id="idVizFrame4" uiConfig="{applicationSet:'fiori'}" vizType='donut' vizProperties="{title:{text:'Energy consumption'}}" class="vizClass">
+                            <viz:VizFrame id="idVizFrame4" uiConfig="{applicationSet:'fiori'}" vizType='donut' vizProperties="{title:{text:'Energy consumption'}}" >
                                 <viz:dataset>
                                     <viz.data:FlattenedDataset data="{vizData>/}">
                                         <viz.data:dimensions>
@@ -91,7 +91,7 @@
                     <l:BlockLayoutRow accentCells="Accent2">
                         <l:BlockLayoutCell id="Accent2" width="2">
                             <viz:Popover id="idPopOver3" />
-                            <viz:VizFrame id="idVizFrame3" uiConfig="{applicationSet:'fiori'}" vizType="bar" vizProperties="{title:{text:'Top 10 executed programs'}}" class="vizClass">
+                            <viz:VizFrame id="idVizFrame3" uiConfig="{applicationSet:'fiori'}" vizType="bar" vizProperties="{title:{text:'Top 10 executed programs'}}" >
                                 <viz:dataset>
                                     <viz.data:FlattenedDataset data="{Chart2Data>/}">
                                         <viz.data:dimensions>
@@ -111,7 +111,7 @@
                         </l:BlockLayoutCell>
                         <l:BlockLayoutCell width="2">
                             <viz:Popover id="idPopOver2" visible="false" />
-                            <viz:VizFrame id="idVizFrame2" visible="false" uiConfig="{applicationSet:'fiori'}" vizType="dual_combination" vizProperties="{title:{text:'CPU time > 100K Seconds'}}" class="vizClass">
+                            <viz:VizFrame id="idVizFrame2" visible="false" uiConfig="{applicationSet:'fiori'}" vizType="dual_combination" vizProperties="{title:{text:'CPU time > 100K Seconds'}}" >
                                 <viz:dataset>
                                     <viz.data:FlattenedDataset data="{vizData1>/}">
                                         <viz.data:dimensions>
@@ -132,7 +132,7 @@
                                 </viz:feeds>
                             </viz:VizFrame>
 
-                            <ui:Table id="idTable" rows="{vizData1>/}" selectionMode="Single" alternateRowColors="true" visibleRowCount="7" ariaLabelledBy="title" rowSelectionChange="onRowSelectionChange">
+                            <ui:Table id="idTable" rows="{vizData1>/}" selectionMode="Single" alternateRowColors="true" visibleRowCount="7" ariaLabelledBy="title" rowSelectionChange="onRowSelectionChange" class="vizClass">
                                 <ui:extension>
                                     <OverflowToolbar>
                                         <content>
@@ -144,33 +144,40 @@
                                 </ui:extension>
                                 <ui:columns>
                                     <ui:Column width="5rem" hAlign="Center">
-                                        <Label text="Month" />
+                                        <Label text="Month" wrapping="true"/>
                                         <ui:template>
-                                            <Text text="{vizData1>Month}" wrapping="false" />
+                                            <Text text="{parts: [{path: 'vizData1>Month'}],formatter: '.formatter.MonthName'}" wrapping="false" visible="{parts: [{path: 'vizData1>Param'}],formatter: '.formatter.Visible'}"/>
                                         </ui:template>
                                     </ui:Column>
                                     <ui:Column width="5rem" hAlign="Center">
-                                        <Label text="Range" />
+                                        <Label text="gCO2e Range" wrapping="true"/>
                                         <ui:template>
-                                            <ObjectNumber number="{vizData1>Param}" state="{parts: [{path: 'vizData1>Param'}],formatter: '.formatter.State'}" />
+                                            <!--ObjectNumber number="{vizData1>Param}" state="{parts: [{path: 'vizData1>Param'}],formatter: '.formatter.State'}" /-->
+                                            <Text text="{vizData1>Param}" />
                                         </ui:template>
                                     </ui:Column>
                                     <ui:Column hAlign="Center">
-                                        <Label text="CPU time in seconds" />
+                                        <Label text="Count of custom program" wrapping="true"/>
                                         <ui:template>
-                                            <Text text="{vizData1>currentRunningTimeinCPUSeconds}" />
+                                            <Text text="{vizData1>Count of custom program}" />
                                         </ui:template>
                                     </ui:Column>
                                     <ui:Column hAlign="Center">
-                                        <Label text="Run count per month" />
+                                        <Label text="Run count per month" wrapping="true"/>
                                         <ui:template>
                                             <Text text="{vizData1>Run count per month}" />
                                         </ui:template>
                                     </ui:Column>
                                     <ui:Column hAlign="Center">
-                                        <Label text="CO2 emission in g" />
+                                        <Label text="CO2 emission in g" wrapping="true"/>
                                         <ui:template>
-                                            <Text text="{parts: [ {path: 'vizData1>CO2 emission in g'}], formatter: '.formatter.CO2Emission' }" />
+                                            <Text text="{parts: [ {path: 'vizData1>CO2 emission in g'}], formatter: '.formatter.FloatWith2Decimals' }" />
+                                        </ui:template>
+                                    </ui:Column>
+                                    <ui:Column hAlign="Center">
+                                        <Label text="Average gCO2e" wrapping="true"/>
+                                        <ui:template>
+                                            <Text text="{parts: [ {path: 'vizData1>Average'}], formatter: '.formatter.FloatWith2Decimals' }" />
                                         </ui:template>
                                     </ui:Column>
                                 </ui:columns>

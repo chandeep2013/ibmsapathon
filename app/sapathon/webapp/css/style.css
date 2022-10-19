@@ -2,7 +2,7 @@
     justify-content: center !important;
 }*/
 .sapUiBlockLayoutSizeXL:not(.sapUiBlockLayoutKeepFontSize) .sapUiBlockCellContent {
-    padding: 0.5rem 1rem !important;
+    padding: 0.5rem 0.5rem !important;
     font-size: 1rem !important;
 }
 .titleClass {
@@ -19,11 +19,16 @@
     color: green;
     text-shadow: none;
 }
-
 .vizClass{
-    width: 47rem !important;
+    width: 100% !important;
     height: 19.5rem !important;
-}/*18rem*/
+}
+.sapVizFrame{
+    width: 100% !important;
+    height: 19.5rem !important;
+}/*18rem vizClass
+width: 47rem !important;
+    height: 19.5rem !important;*/
 .sapUiSizeCompact .sapMPageHeader .sapMIBar, .sapUiSizeCompact .sapMPageFooter .sapMIBar {
     height: 4.9rem;
 }
@@ -91,5 +96,22 @@
 }
 
 .sapUiSizeCompact .sapMTB {
-    height: 2.7rem !important;
+    height: 2.2rem !important;
+}
+.sapUiTableColHdrCnt {
+    height: 3.5rem !important;
+}    
+.sapUiTableHeaderDataCell>.sapUiTableCellInner {
+    padding: 0 0rem !important;
+    padding-left: 0.5rem !important;
+}
+
+/*.sapUiBlockLayoutSizeL:not(.sapUiBlockLayoutKeepFontSize) .sapUiBlockCellContent {
+    padding: 2rem 0.5rem !important;
+    font-size: 1rem !important;
+}*/
+
+.sapUiBlockLayoutSizeL:not(.sapUiBlockLayoutKeepFontSize) .sapUiBlockCellContent {
+    padding: 1rem 0.5rem !important;
+    font-size: 1rem !important;
 }

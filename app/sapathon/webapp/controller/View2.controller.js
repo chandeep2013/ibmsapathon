@@ -10,9 +10,9 @@ sap.ui.define([
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, JSONModel, Popover, Export, ExportTypeCSV,formatter,MessageBox) {
+    function (Controller, JSONModel, Popover, Export, ExportTypeCSV, formatter, MessageBox) {
         "use strict";
-        
+
         return Controller.extend("com.sap.sapathon.controller.View2", {
             formatter: formatter,
             onInit: function (oEvent) {
@@ -21,45 +21,46 @@ sap.ui.define([
                 this.oRouter.getRoute("View2").attachPatternMatched(this._onRouterMatched, this);
             },
             _onRouterMatched: function (oEvent) {
-                var Param = oEvent.getParameter("arguments").month;
-                var Top10 = oEvent.getParameter("arguments").top10;
-                this.onPressSubmit(Param, Top10);
+                var sMonth = oEvent.getParameter("arguments").month;
+                var sTop10 = oEvent.getParameter("arguments").top10;
+                var sRange = oEvent.getParameter("arguments").range;
+                this.onPressSubmit(sMonth, sTop10, sRange);
             },
-            onPressSubmit: function (val, Top10) {
-                var that = this, MonthName,aEntries = [],replaceMonthText;
-                var progamFilter = "",programRunPerMonthFilter="",CO2EMissionFilter="",TotalCPUtimeinsecondsFilter="";
+            onPressSubmit: function (val, top10, range) {
+                var that = this, MonthName, aEntries = [], replaceMonthText;
+                var progamFilter = "", programRunPerMonthFilter = "", CO2EMissionFilter = "", TotalCPUtimeinsecondsFilter = "";
                 if (val && val.length === 3) {
                     var Month = val, usage = "", programName = "", energyConsumption = "", programRunPerMonth = "", CO2EMission = "", TotalCPUtimeinseconds = "";
                     this.getView().byId("idExecutionMonth").setSelectedKeys([val]);
-                    replaceMonthText = "( executionMonth eq '"+Month+"' )";
+                    replaceMonthText = "( executionMonth eq '" + Month + "' )";
                 }
                 else {
                     Month = this.getView().byId("idExecutionMonth").getSelectedKeys();
-                    if(Month.length == 0){
+                    if (Month.length == 0) {
                         Month.push("Jan");
                         this.getView().byId("idExecutionMonth").setSelectedKeys([Month]);
                     }
-                    for(var i=0;i<Month.length;i++){
-                        aEntries.push("executionMonth eq '" + Month[i]+ "'");
+                    for (var i = 0; i < Month.length; i++) {
+                        aEntries.push("executionMonth eq '" + Month[i] + "'");
                     }
                     replaceMonthText = "( " + aEntries.join(" or ") + " )";
                     usage = this.getView().byId("idUsage").getValue();
                     programName = this.getView().byId("idProgramName").getValue();
-                    if(programName != ""){
-                        progamFilter = "and programName eq '"+programName+"'";
+                    if (programName != "") {
+                        progamFilter = "and programName eq '" + programName + "'";
                     }
                     programRunPerMonth = this.getView().byId("idProgramRunPerMonth").getValue();
-                    if(programRunPerMonth != ""){
-                        programRunPerMonthFilter = " and noOfTimesThePgmRunForTheMonth eq '"+programRunPerMonth+"'";
+                    if (programRunPerMonth != "") {
+                        programRunPerMonthFilter = " and noOfTimesThePgmRunForTheMonth eq '" + programRunPerMonth + "'";
                     }
                     CO2EMission = this.getView().byId("idCO2EMission").getValue();
-                    if(CO2EMission != ""){
-                        CO2EMissionFilter = " and co2EmissioninMG eq '"+CO2EMission+"'";
+                    if (CO2EMission != "") {
+                        CO2EMissionFilter = " and co2EmissioninMG eq '" + CO2EMission + "'";
                     }
-                    
+
                     TotalCPUtimeinseconds = this.getView().byId("idTotalCPUtimeinseconds").getValue();
-                    if(TotalCPUtimeinseconds != ""){
-                        TotalCPUtimeinsecondsFilter = " and currentRunningTimeinCPUSeconds eq '"+TotalCPUtimeinseconds+"'";
+                    if (TotalCPUtimeinseconds != "") {
+                        TotalCPUtimeinsecondsFilter = " and currentRunningTimeinCPUSeconds eq '" + TotalCPUtimeinseconds + "'";
                     }
                 }
                 var monthsArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -69,11 +70,12 @@ sap.ui.define([
                     }
                 }
 
-                if (Top10 == "true") {https://port4004-workspaces-ws-69bpc.eu10.applicationstudio.cloud.sap/v2/catalog/SampleData
+                if (top10 == "true") {
+                    https://port4004-workspaces-ws-69bpc.eu10.applicationstudio.cloud.sap/v2/catalog/SampleData
                     var spath = "/v2/catalog/SampleData?$format=json&$filter={1} and usage eq 'PROD'&$orderby=noOfTimesThePgmRunForTheMonth desc&$top=10"
                 }
                 else {
-                    spath = "/v2/catalog/SampleData?$format=json&$filter={1} " + progamFilter + programRunPerMonthFilter + CO2EMissionFilter + TotalCPUtimeinsecondsFilter +" and usage eq 'PROD'";
+                    spath = "/v2/catalog/SampleData?$format=json&$filter={1} " + progamFilter + programRunPerMonthFilter + CO2EMissionFilter + TotalCPUtimeinsecondsFilter + " and usage eq 'PROD'";
                 }
                 spath = spath.replace("{1}", replaceMonthText);
                 sap.ui.core.BusyIndicator.show(-1);
@@ -85,10 +87,47 @@ sap.ui.define([
                     url: spath,
                     async: true,
                     success: function (result) {
-                        that.getView().byId("idMonthsDetails").setText("Records(" + result.d.results.length + ")");
                         sap.ui.core.BusyIndicator.hide();
-                        oModel.setData(result.d.results);
-                        that.getView().setModel(oModel, "Tabledata");
+                        if (range) {
+                            var lessthanOne = [], GreaterthanOne = [], greaterthanTwo = [], greaterthanThree = [];
+                            for (var i = 0; i < result.d.results.length; i++) {
+                                if (parseFloat(result.d.results[i].co2EmissioninMG) < 1) {
+                                    lessthanOne.push(result.d.results[i]);
+                                }
+                                else if (parseFloat(result.d.results[i].co2EmissioninMG) > 1 && parseFloat(result.d.results[i].co2EmissioninMG) < 2) {
+                                    GreaterthanOne.push(result.d.results[i]);
+                                }
+                                else if (parseFloat(result.d.results[i].co2EmissioninMG) > 2 && parseFloat(result.d.results[i].co2EmissioninMG) < 3) {
+                                    greaterthanTwo.push(result.d.results[i]);
+                                }
+                                else if (parseFloat(result.d.results[i].co2EmissioninMG) > 3) {
+                                    greaterthanThree.push(result.d.results[i]);
+                                }
+                            }
+                            if (range == "<1") {
+                                oModel.setData(lessthanOne);
+                                that.getView().byId("idMonthsDetails").setText("Records(" + lessthanOne.length + ")");  
+                            }
+                            else if (range == "1-2") {
+                                oModel.setData(GreaterthanOne);
+                                that.getView().byId("idMonthsDetails").setText("Records(" + GreaterthanOne.length + ")");  
+                            }
+                            else if (range == "2-3") {
+                                oModel.setData(greaterthanTwo);
+                                that.getView().byId("idMonthsDetails").setText("Records(" + greaterthanTwo.length + ")");  
+                            }
+                            else if (range == ">3") {
+                                oModel.setData(greaterthanThree);
+                                that.getView().byId("idMonthsDetails").setText("Records(" + greaterthanThree.length + ")");  
+                            }
+                            that.getView().setModel(oModel, "Tabledata");
+                        }
+                        else {
+                            oModel.setData(result.d.results);
+                            that.getView().byId("idMonthsDetails").setText("Records(" + result.d.results.length + ")");
+                            that.getView().setModel(oModel, "Tabledata");
+                        }
+
                     },
                     error: function (errorThrown) {
                         MessageBox.error("Error on getting data!");
@@ -113,7 +152,7 @@ sap.ui.define([
                             path: "usage"
                         }
                     }
-                },  {
+                }, {
                     name: "Program name",
                     template: {
                         content: {
