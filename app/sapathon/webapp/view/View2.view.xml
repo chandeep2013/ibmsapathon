@@ -62,7 +62,7 @@
                         <OverflowToolbar>
                             <Label id="idMonthsDetails" text="" />
                             <ToolbarSpacer />
-                            <Button text="Submit" press="onPressSubmit"/>
+                            <Button text="Search" press="onPressSubmit"/>
                             <Button icon="sap-icon://excel-attachment" press="onDataExport" tooltip="on download data"/>
                         </OverflowToolbar>
                     </headerToolbar>
@@ -102,7 +102,7 @@
                                 <Text text="{ parts: [ {path: 'Tabledata>executionMonth'}], formatter: '.formatter.MonthName' }" />
                                 <Text text="{Tabledata>currentRunningTimeinCPUSeconds}" />
                                 <Text text="{Tabledata>currentRunningTimeinCPUSeconds}" />
-                                <Text text="{Tabledata>co2EmissioninMG}" />
+                                <Text text="{parts: [ {path: 'Tabledata>co2EmissioninMG'}], formatter: '.formatter.FloatWith2Decimals' }" />
                             </cells>
                         </ColumnListItem>
                     </items>

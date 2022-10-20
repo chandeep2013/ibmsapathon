@@ -10,6 +10,7 @@
     xmlns:viz="sap.viz.ui5.controls"
     xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
     xmlns:viz.data="sap.viz.ui5.data"
+    xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
 >
     <Page id="page">
         <customHeader>
@@ -26,7 +27,7 @@
                     <GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout" header="Total CO2 emission">
                         <TileContent>
                             <VBox>
-                                <ImageContent src="model/CO2.svg" />
+                                <ImageContent src="model/co2.png" />
                                 <Text id="idTotalCO2" width="140px" />
                             </VBox>
                         </TileContent>
@@ -49,7 +50,7 @@
                     <l:BlockLayoutRow accentCells="Accent1">
                         <l:BlockLayoutCell id="Accent1" width="2">
                             <viz:Popover id="idPopOver1" />
-                            <viz:VizFrame id="idVizFrame1" uiConfig="{applicationSet:'fiori'}" vizType="column" vizProperties="{title:{text:'CO2 emission'}}" >
+                            <viz:VizFrame id="idVizFrame1" uiConfig="{applicationSet:'fiori'}" vizType="column" vizProperties="{title:{text:'CO2 emission'}}">
                                 <viz:dataset>
                                     <viz.data:FlattenedDataset data="{vizData>/}">
                                         <viz.data:dimensions>
@@ -70,7 +71,7 @@
                         </l:BlockLayoutCell>
                         <l:BlockLayoutCell width="2">
                             <viz:Popover id="idPopOver4" />
-                            <viz:VizFrame id="idVizFrame4" uiConfig="{applicationSet:'fiori'}" vizType='donut' vizProperties="{title:{text:'Energy consumption'}}" >
+                            <viz:VizFrame id="idVizFrame4" uiConfig="{applicationSet:'fiori'}" vizType='donut' vizProperties="{title:{text:'Energy consumption'}}">
                                 <viz:dataset>
                                     <viz.data:FlattenedDataset data="{vizData>/}">
                                         <viz.data:dimensions>
@@ -91,7 +92,7 @@
                     <l:BlockLayoutRow accentCells="Accent2">
                         <l:BlockLayoutCell id="Accent2" width="2">
                             <viz:Popover id="idPopOver3" />
-                            <viz:VizFrame id="idVizFrame3" uiConfig="{applicationSet:'fiori'}" vizType="bar" vizProperties="{title:{text:'Top 10 executed programs'}}" >
+                            <viz:VizFrame id="idVizFrame3" uiConfig="{applicationSet:'fiori'}" vizType="bar" vizProperties="{title:{text:'Top 10 executed programs'}}" class="marginLeftCalss">
                                 <viz:dataset>
                                     <viz.data:FlattenedDataset data="{Chart2Data>/}">
                                         <viz.data:dimensions>
@@ -111,7 +112,7 @@
                         </l:BlockLayoutCell>
                         <l:BlockLayoutCell width="2">
                             <viz:Popover id="idPopOver2" visible="false" />
-                            <viz:VizFrame id="idVizFrame2" visible="false" uiConfig="{applicationSet:'fiori'}" vizType="dual_combination" vizProperties="{title:{text:'CPU time > 100K Seconds'}}" >
+                            <viz:VizFrame id="idVizFrame2" visible="false" uiConfig="{applicationSet:'fiori'}" vizType="dual_combination" vizProperties="{title:{text:'CPU time > 100K Seconds'}}">
                                 <viz:dataset>
                                     <viz.data:FlattenedDataset data="{vizData1>/}">
                                         <viz.data:dimensions>
@@ -132,7 +133,7 @@
                                 </viz:feeds>
                             </viz:VizFrame>
 
-                            <ui:Table id="idTable" rows="{vizData1>/}" selectionMode="Single" alternateRowColors="true" visibleRowCount="7" ariaLabelledBy="title" rowSelectionChange="onRowSelectionChange" class="vizClass">
+                            <ui:Table id="idTable" rows="{vizData1>/}" selectionMode="Single" alternateRowColors="true" visibleRowCount="7" ariaLabelledBy="title" rowsUpdated="onRowsUpdated" rowSelectionChange="onRowSelectionChange" class="vizClass">
                                 <ui:extension>
                                     <OverflowToolbar>
                                         <content>
@@ -144,38 +145,44 @@
                                 </ui:extension>
                                 <ui:columns>
                                     <ui:Column width="5rem" hAlign="Center">
-                                        <Label text="Month" wrapping="true"/>
+                                        <Label text="Month" wrapping="true" />
                                         <ui:template>
-                                            <Text text="{parts: [{path: 'vizData1>Month'}],formatter: '.formatter.MonthName'}" wrapping="false" visible="{parts: [{path: 'vizData1>Param'}],formatter: '.formatter.Visible'}"/>
+                                            <Text text="{vizData1>Month}" wrapping="false" visible="{parts: [{path: 'vizData1>Param'}],formatter: '.formatter.Visible'}" />
                                         </ui:template>
                                     </ui:Column>
-                                    <ui:Column width="5rem" hAlign="Center">
-                                        <Label text="gCO2e Range" wrapping="true"/>
+                                    <ui:Column width="8rem" hAlign="Center">
+                                        <Label text="Co2 emission in grams" wrapping="true" />
                                         <ui:template>
                                             <!--ObjectNumber number="{vizData1>Param}" state="{parts: [{path: 'vizData1>Param'}],formatter: '.formatter.State'}" /-->
                                             <Text text="{vizData1>Param}" />
+                                            <!--HBox>
+                                                <Text text="{vizData1>Param}" />
+                                                <customData>
+                                                    <core:CustomData key="bgcolor" value="{= ${vizData1>Param} === '1' ? 'green' : ${vizData1>Param} === '1-2' ? 'yellow' : ${vizData1>Param} === '2-3' ? 'gray' : 'red'}" writeToDom="true" />
+                                                </customData>
+                                            </HBox-->
                                         </ui:template>
                                     </ui:Column>
-                                    <ui:Column hAlign="Center">
-                                        <Label text="Count of custom program" wrapping="true"/>
+                                    <ui:Column hAlign="Center" width="10rem">
+                                        <Label text="Count of custom program" wrapping="true" />
                                         <ui:template>
                                             <Text text="{vizData1>Count of custom program}" />
                                         </ui:template>
                                     </ui:Column>
-                                    <ui:Column hAlign="Center">
-                                        <Label text="Run count per month" wrapping="true"/>
+                                    <ui:Column hAlign="Center" width="10rem">
+                                        <Label text="Run count per month" wrapping="true" />
                                         <ui:template>
                                             <Text text="{vizData1>Run count per month}" />
                                         </ui:template>
                                     </ui:Column>
-                                    <ui:Column hAlign="Center">
+                                    <!--ui:Column hAlign="Center">
                                         <Label text="CO2 emission in g" wrapping="true"/>
                                         <ui:template>
                                             <Text text="{parts: [ {path: 'vizData1>CO2 emission in g'}], formatter: '.formatter.FloatWith2Decimals' }" />
                                         </ui:template>
-                                    </ui:Column>
-                                    <ui:Column hAlign="Center">
-                                        <Label text="Average gCO2e" wrapping="true"/>
+                                    </ui:Column-->
+                                    <ui:Column  hAlign="Center" >
+                                        <Label text="Average Co2 emission in grams" wrapping="true" />
                                         <ui:template>
                                             <Text text="{parts: [ {path: 'vizData1>Average'}], formatter: '.formatter.FloatWith2Decimals' }" />
                                         </ui:template>

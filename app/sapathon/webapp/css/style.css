@@ -2,7 +2,7 @@
     justify-content: center !important;
 }*/
 .sapUiBlockLayoutSizeXL:not(.sapUiBlockLayoutKeepFontSize) .sapUiBlockCellContent {
-    padding: 0.5rem 0.5rem !important;
+    padding: 0.1rem 0.1rem !important;
     font-size: 1rem !important;
 }
 .titleClass {
@@ -20,6 +20,7 @@
     text-shadow: none;
 }
 .vizClass{
+    margin-top: 5px !important;
     width: 100% !important;
     height: 19.5rem !important;
 }
@@ -98,9 +99,6 @@ width: 47rem !important;
 .sapUiSizeCompact .sapMTB {
     height: 2.2rem !important;
 }
-.sapUiTableColHdrCnt {
-    height: 3.5rem !important;
-}    
 .sapUiTableHeaderDataCell>.sapUiTableCellInner {
     padding: 0 0rem !important;
     padding-left: 0.5rem !important;
@@ -114,4 +112,30 @@ width: 47rem !important;
 .sapUiBlockLayoutSizeL:not(.sapUiBlockLayoutKeepFontSize) .sapUiBlockCellContent {
     padding: 1rem 0.5rem !important;
     font-size: 1rem !important;
+}
+.green{
+    background-color : "#99EE99";
+}
+.gray{
+    background-color :"#FFFCD1"
+}
+.yellow{
+    background-color :"#FFBF00"
+}
+.red{
+    background-color :"Red"
+}
+span[data-colorcode = "green"]{background-color : rgba(0, 128, 0, 0.22) }
+span[data-colorcode = "red"]{  background-color :  rgba(255, 0, 0, 0.13) } 
+span[data-background="green"] {
+    background-color: #c9fcd5 !important;
+}
+span[data-background="red"] {
+    background-color: rgba(255, 0, 0, 0.13) !important;
+}
+.ui5-viz-controls-app {
+    margin-top: 15px !important;
+}    
+.marginLeftCalss{
+   margin-top: -10px !important
 }

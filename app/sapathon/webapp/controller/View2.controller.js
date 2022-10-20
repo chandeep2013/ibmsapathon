@@ -24,9 +24,10 @@ sap.ui.define([
                 var sMonth = oEvent.getParameter("arguments").month;
                 var sTop10 = oEvent.getParameter("arguments").top10;
                 var sRange = oEvent.getParameter("arguments").range;
-                this.onPressSubmit(sMonth, sTop10, sRange);
+                var sChart = oEvent.getParameter("arguments").chart;
+                this.onPressSubmit(sMonth, sTop10, sRange,sChart);
             },
-            onPressSubmit: function (val, top10, range) {
+            onPressSubmit: function (val, top10, range,chart) {
                 var that = this, MonthName, aEntries = [], replaceMonthText;
                 var progamFilter = "", programRunPerMonthFilter = "", CO2EMissionFilter = "", TotalCPUtimeinsecondsFilter = "";
                 if (val && val.length === 3) {
@@ -106,26 +107,36 @@ sap.ui.define([
                             }
                             if (range == "<1") {
                                 oModel.setData(lessthanOne);
-                                that.getView().byId("idMonthsDetails").setText("Records(" + lessthanOne.length + ")");  
+                                that.getView().byId("idMonthsDetails").setText("Average carbon emission in "+Month+" (" + range + "grams)-"+" (" + lessthanOne.length + " records)");  
                             }
                             else if (range == "1-2") {
                                 oModel.setData(GreaterthanOne);
-                                that.getView().byId("idMonthsDetails").setText("Records(" + GreaterthanOne.length + ")");  
+                                that.getView().byId("idMonthsDetails").setText("Average carbon emission in "+Month+" (" + range + "grams)-"+" (" + GreaterthanOne.length + " records)");  
                             }
                             else if (range == "2-3") {
                                 oModel.setData(greaterthanTwo);
-                                that.getView().byId("idMonthsDetails").setText("Records(" + greaterthanTwo.length + ")");  
+                                that.getView().byId("idMonthsDetails").setText("Average carbon emission in "+Month+" (" + range + "grams)-"+" (" + greaterthanTwo.length + " records)"); 
                             }
                             else if (range == ">3") {
-                                oModel.setData(greaterthanThree);
-                                that.getView().byId("idMonthsDetails").setText("Records(" + greaterthanThree.length + ")");  
+                                oModel.setData(greaterthanThree); 
+                                that.getView().byId("idMonthsDetails").setText("Average carbon emission in "+Month+" (" + range + "grams)-"+" (" + greaterthanThree.length + " records)");  
                             }
                             that.getView().setModel(oModel, "Tabledata");
                         }
                         else {
                             oModel.setData(result.d.results);
-                            that.getView().byId("idMonthsDetails").setText("Records(" + result.d.results.length + ")");
+                            that.getView().byId("idMonthsDetails").setText("Records (" + result.d.results.length + ")");
                             that.getView().setModel(oModel, "Tabledata");
+                        }
+
+                        if(chart ==="chart1"){
+                            that.getView().byId("idMonthsDetails").setText("Co2 emission for "+Month +" (" + result.d.results.length + " records)");
+                        }
+                        else if(chart === "chart2"){
+                            that.getView().byId("idMonthsDetails").setText("Top 10 executed programs for "+Month );
+                        }
+                        else if(chart ==="chart3"){
+                            that.getView().byId("idMonthsDetails").setText("Energy consumption for "+Month +" (" + result.d.results.length + " records)");
                         }
 
                     },

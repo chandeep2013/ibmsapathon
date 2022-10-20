@@ -35,7 +35,7 @@ sap.ui.define([], function () {
                 return true;
             }
             else{
-                return false;
+                return true;
             }
         }
 
